@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HomeHeader from '@/components/HomeHeader/HomeHeader'
 import Main from '@/components/Main/Main'
 import Sellers from '@/components/Sellers/Sellers'
 import Indent from '@/components/Indent/Indent'
@@ -8,6 +7,7 @@ import Mine from '@/components/Mine/Mine'
 import Detail from '@/components/Detail/Detail'
 import Service from '@/components/Service/Service'
 import Baby from '@/components/Baby/Baby'
+import BabyDetail from '@/components/BabyDetail/BabyDetail'
 import PayDetail from '@/components/PayDetail/PayDetail'
 import Pay from '@/components/Pay/Pay'
 
@@ -53,6 +53,10 @@ export default new Router({
         {
             path: '/pay',
             component: Pay
-        }
+        },
+        {
+            path: '/babydetail',
+            component: BabyDetail
+        },
     ]
 })
