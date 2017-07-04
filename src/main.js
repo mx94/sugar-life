@@ -3,12 +3,14 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
-import { Header, Button } from 'mint-ui'
+import { Header, Button, Field, Radio } from 'mint-ui'
 import 'mint-ui/lib/style.min.css'
 import './common/stylus/index.styl'
 
 Vue.use(Header)
 Vue.use(Button)
+Vue.use(Field)
+Vue.use(Radio)
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
