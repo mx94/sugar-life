@@ -33,7 +33,7 @@
             <mt-field label="订单时间：" :readonly="true" v-model="orderTime"></mt-field>
 
             <a class="mint-cell mint-field" style="padding-bottom: 50px; background-image: none; border-bottom: 1px dotted #ffeb93">
-                <div class="mint-cell-wrapper" style="position: relative">
+                <div class="mint-cell-wrapper" style="position: relative; background-image: none">
                     <div class="mint-cell-title"><span class="mint-cell-text"><i class="icon-wechat"></i><span class="wechat-text">微信支付</span></span></div>
                     <div class="mint-cell-value">
                         <mt-radio
@@ -47,7 +47,7 @@
         </div>
 
         <div class="pay-form-submit">
-            <span>￥888</span>
+            <span>￥200</span>
             <mt-button type="primary" size="small" class="btn-pay">支付</mt-button>
         </div>
     </div>
