@@ -1,23 +1,27 @@
 <template>
     <div>
-        <mt-header title="用户登录" class="m-header">
+        <mt-header title="用户注册" class="m-header">
             <span @click="$router.go(-1)" slot="left">
                 <mt-button icon="back" name="back"></mt-button>
             </span>
-            <router-link to="/register" slot="right">注册</router-link>
         </mt-header>
 
         <div class="login-con">
             <div class="input-row">
                 <label><i class="icon-phone"></i></label>
                 <input type="number" placeholder="请输入手机号">
+                <span class="get-code">获取验证码</span>
+            </div>
+            <div class="input-row">
+                <label><i class="icon-verification"></i></label>
+                <input type="number" placeholder="请输入验证码">
             </div>
             <div class="input-row">
                 <label><i class="icon-password"></i></label>
-                <input type="password" placeholder="请输入密码">
+                <input type="password" placeholder="请输入6-20位数字或字母的密码">
             </div>
-            <mt-button class="btn" type="primary">登录</mt-button>
-            <router-link to="/changepassword" class="find" href="javascript:;">找回密码</router-link>
+            <span class="duty"><i class="icon-choose"></i>我已阅读并同意<a href="javascript:;">《乐宝时代用户协议》</a></span>
+            <mt-button class="btn" type="primary">注册并登录</mt-button>
         </div>
     </div>
 </template>
@@ -72,6 +76,13 @@
                     background-image url("./icon_password@3x.png")
                     background-repeat no-repeat
                     background-size 25px 25px
+                .icon-verification
+                    display inline-block
+                    width 25px
+                    height 25px
+                    background-image url("./icon_verificationCode@3x.png")
+                    background-repeat no-repeat
+                    background-size 25px 25px
             input
                 flex 1
                 outline: 0;
@@ -85,15 +96,31 @@
                 &::placeholder
                     color #b6b6b6
                     font-size 14px
+            .get-code
+                flex 1
+                font-size 14px
+                color #6389cd
+                display: flex;
+                justify-content: flex-end;
         .btn
             width 100%
             background-color #6389CD
             border-radius 100px
             font-size 16px
-            margin-top 30px
-        .find
-            color #b6b6b6
-            font-size 14px
-            float right
             margin-top 20px
+        .duty
+            display inline-block
+            font-size 12px
+            color #999
+            margin-top 15px
+            .icon-choose
+                display inline-block
+                width 14px
+                height 14px
+                background-image url("./icon_choose@3x.png")
+                background-repeat no-repeat
+                background-size 14px 14px
+                margin-right 5px
+            a
+                color #6389cd
 </style>

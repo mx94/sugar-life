@@ -6,7 +6,9 @@
                 <div class="list-item-content">
                     <span class="sale-name">{{ list.saleName }}</span>
                     <div class="star-con">
-                        <div class="star">星级：++++ {{ list.star }}星</div>
+                        <div class="star">
+                            <star :count="list.star"></star>
+                        </div>
                         <div class="distance" v-show="hasPos">距离：<span>{{ list.distance }}m</span></div>
                     </div>
                     <p class="comment">{{ list.comment }}</p>
@@ -16,6 +18,8 @@
     </div>
 </template>
 <script>
+    import Star from '../../components/Star/Star.vue'
+
     export default {
         props: ['hasPos'],
         data () {
@@ -24,15 +28,15 @@
                     {
                         id: 0,
                         src: 'http://avatar.csdn.net/C/B/D/1_u010014658.jpg',
-                        saleName: '店铺名称',
-                        star: 4,
+                        saleName: '店铺名称1',
+                        star: 2,
                         distance: 200,
                         comment: '这是一个小孩游泳馆，体验特别的有用瞬间，你值得拥有'
                     },
                     {
                         id: 1,
                         src: 'http://avatar.csdn.net/C/B/D/1_u010014658.jpg',
-                        saleName: '店铺名称',
+                        saleName: '店铺名称2',
                         star: 4,
                         distance: 200,
                         comment: '这是一个小孩游泳馆，体验特别的有用瞬间，你值得拥有'
@@ -40,23 +44,25 @@
                     {
                         id: 2,
                         src: 'http://avatar.csdn.net/C/B/D/1_u010014658.jpg',
-                        saleName: '店铺名称',
-                        star: 4,
+                        saleName: '店铺名称3',
+                        star: 3,
                         distance: 200,
                         comment: '这是一个小孩游泳馆，体验特别的有用瞬间，你值得拥有'
                     },
                     {
                         id: 3,
                         src: 'http://avatar.csdn.net/C/B/D/1_u010014658.jpg',
-                        saleName: '店铺名称',
-                        star: 4,
+                        saleName: '店铺名称4',
+                        star: 5,
                         distance: 200,
                         comment: '这是一个小孩游泳馆，体验特别的有用瞬间，你值得拥有'
                     }
                 ]
             }
         },
-        components: {},
+        components: {
+            Star
+        },
         methods: {}
     }
 </script>

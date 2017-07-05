@@ -6,7 +6,12 @@
 </template>
 <script>
     export default {
-        props: ['hasMore'],
+        props: {
+            hasMore: {
+                type: Boolean,
+                default: true
+            }
+        },
         data () {
             return {}
         },

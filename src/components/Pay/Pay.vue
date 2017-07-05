@@ -7,30 +7,24 @@
         </mt-header>
 
         <div class="pay-form">
-            <mt-field label="门店名称：" :readonly="true" v-model="sellersName"></mt-field>
-            <mt-field label="服务项目：" :readonly="true" v-model="serviceName"></mt-field>
+            <mt-field label="门店名称：" :readonly="true" v-model="info.sellersName"></mt-field>
+            <mt-field label="服务项目：" :readonly="true" v-model="info.serviceName"></mt-field>
 
             <a class="mint-cell mint-field">
                 <div class="mint-cell-left"></div>
                 <div class="mint-cell-wrapper">
                     <div class="mint-cell-title"><span class="mint-cell-text">数量：</span></div>
                     <div class="mint-cell-value">
-                        <mt-button type="default" size="small">-</mt-button>
-                        <input placeholder="请输入数字" number="true" type="number" class="mint-field-core count" v-model="count">
-                        <mt-button type="default" size="small">+</mt-button>
-                        <div class="mint-field-clear" style="display: none;">
-                            <i class="mintui mintui-field-error"></i>
-                        </div>
-                        <span class="mint-field-state is-default"><i class="mintui mintui-field-default"></i></span>
-                        <div class="mint-field-other"></div>
+                        <mt-button type="default" size="small" @click="mini">-</mt-button>
+                        <input placeholder="请输入数字" number="true" type="number" class="mint-field-core count" v-model="info.count">
+                        <mt-button type="default" size="small" @click="sum">+</mt-button>
                     </div>
                 </div>
-                <div class="mint-cell-right"></div>
             </a>
 
-            <mt-field label="服务单价：" :readonly="true" v-model="sevicePrice"></mt-field>
-            <mt-field label="绑定手机号：" :readonly="true" v-model="phoneNumber"></mt-field>
-            <mt-field label="订单时间：" :readonly="true" v-model="orderTime"></mt-field>
+            <mt-field label="服务单价：" :readonly="true" v-model="info.servicePrice"></mt-field>
+            <mt-field label="绑定手机号：" :readonly="true" v-model="info.phoneNumber"></mt-field>
+            <mt-field label="订单时间：" :readonly="true" v-model="info.orderTime"></mt-field>
 
             <a class="mint-cell mint-field" style="padding-bottom: 50px; background-image: none; border-bottom: 1px dotted #ffeb93">
                 <div class="mint-cell-wrapper" style="position: relative; background-image: none">
@@ -38,7 +32,7 @@
                     <div class="mint-cell-value">
                         <mt-radio
                             align="right"
-                            v-model="wechat"
+                            v-model="info.wechat"
                             :options="['']">
                         </mt-radio>
                     </div>
@@ -47,7 +41,7 @@
         </div>
 
         <div class="pay-form-submit">
-            <span>￥200</span>
+            <span>￥{{ total }}</span>
             <mt-button type="primary" size="small" class="btn-pay">支付</mt-button>
         </div>
     </div>
@@ -58,15 +52,22 @@
     import MtField from "../../../node_modules/mint-ui/packages/field/src/field";
     import MtRadio from "../../../node_modules/mint-ui/packages/radio/src/radio";
     export default {
+        computed: {
+            total() {
+                return this.info.count * parseFloat(this.info.servicePrice.slice(1))
+            }
+        },
         data () {
             return {
-                sellersName: '贝贝宝（浦东大道店）',
-                serviceName: '婴儿洗澡',
-                count: 1,
-                sevicePrice: '￥200',
-                phoneNumber: '13774135698',
-                orderTime: '2017-07-04 16:00',
-                wechat: ''
+                info: {
+                    sellersName: '贝贝宝（浦东大道店）',
+                    serviceName: '婴儿洗澡',
+                    count: 1,
+                    servicePrice: '￥200',
+                    phoneNumber: '13774135698',
+                    orderTime: '2017-07-04 16:00',
+                    wechat: ''
+                }
             }
         },
         components: {
@@ -75,7 +76,15 @@
             MtButton,
             MtHeader
         },
-        methods: {}
+        methods: {
+            mini() {
+                if (this.info.count <= 0) return
+                this.info.count--
+            },
+            sum() {
+                this.info.count++
+            }
+        }
     }
 </script>
 <style lang="stylus" rel="stylesheet/stylus">

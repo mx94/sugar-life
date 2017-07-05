@@ -4,6 +4,9 @@ import Main from '@/components/Main/Main'
 import Sellers from '@/components/Sellers/Sellers'
 import Indent from '@/components/Indent/Indent'
 import Mine from '@/components/Mine/Mine'
+import Register from '@/components/Mine/Register'
+import ChangePassword from '@/components/Mine/ChangePassword'
+import Profile from '@/components/Mine/Profile'
 import Detail from '@/components/Detail/Detail'
 import Service from '@/components/Service/Service'
 import Baby from '@/components/Baby/Baby'
@@ -26,6 +29,18 @@ export default new Router({
         {
             path: '/mine',
             component: Mine
+        },
+        {
+            path: '/changepassword',
+            component: ChangePassword
+        },
+        {
+            path: '/register',
+            component: Register
+        },
+        {
+            path: '/profile',
+            component: Profile
         },
         {
             path: '/sellers',

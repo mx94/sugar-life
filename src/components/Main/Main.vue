@@ -17,6 +17,13 @@
     import LoadMore from '../../components/LoadMore/LoadMore.vue'
 
     export default {
+        created() {
+            this.$http.post('/platform/wechat/store/1').then(res => {
+                console.log(res.body);
+            }).catch(e => {
+                console.log(e);
+            })
+        },
         data () {
             return {
                 hasPos: false,
