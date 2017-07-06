@@ -2,25 +2,25 @@
     <div class="sellers-config">
         <div class="title">门店设施</div>
         <div class="con">
-            <div v-if="facilities.indexOf('WIFI') > -1" class="item item-wifi">
+            <div v-show="facilities.indexOf('WIFI') > -1" class="item item-wifi">
                 <div class="img-con">
                     <div class="img"></div>
                 </div>
                 <div class="text">WIFI</div>
             </div>
-            <div v-if="facilities.indexOf('停车厂') > -1" class="item item-park">
+            <div v-show="facilities.indexOf('停车厂') > -1" class="item item-park">
                 <div class="img-con">
                     <div class="img"></div>
                 </div>
                 <div class="text">停车场</div>
             </div>
-            <div v-if="facilities.indexOf('休息区') > -1" class="item item-rest">
+            <div v-show="facilities.indexOf('休息区') > -1" class="item item-rest">
                 <div class="img-con">
                     <div class="img"></div>
                 </div>
                 <div class="text">休息区</div>
             </div>
-            <div v-if="facilities.indexOf('茶水') > -1" class="item item-tea">
+            <div v-show="facilities.indexOf('茶水') > -1" class="item item-tea">
                 <div class="img-con">
                     <div class="img"></div>
                 </div>
@@ -32,9 +32,6 @@
 </template>
 <script>
     export default {
-        mounted() {
-            alert(this.facilities)
-        },
         props: ['facilities'],
         data () {
             return {}

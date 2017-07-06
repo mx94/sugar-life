@@ -1,12 +1,12 @@
 <template>
     <div class="list-con">
-        <router-link to="/babydetail" v-for="list in lists" :key="list.id" class="list-item">
-            <img :src="list.src">
+        <router-link :to="`/babydetail/${list.id}`" v-for="list in lists" :key="list.id" class="list-item">
+            <img :src="list.photos">
             <div class="list-item-content">
-                <span class="sale-name">{{ list.saleName }}</span>
-                <p class="comment">{{ list.comment }}</p>
+                <span class="sale-name">{{ list.name }}</span>
+                <p class="comment" v-html="list.profile"></p>
                 <div class="star-con">
-                    工作时间：<span class="work-time">{{list.workTime}}</span>
+                    工作时间：<span class="work-time">{{list.workDays}}</span>
                 </div>
             </div>
         </router-link>
@@ -20,37 +20,61 @@
 </template>
 <script>
     import MtButton from "../../../node_modules/mint-ui/packages/button/src/button";
+    import {baseURL} from '../../api/config'
+
     export default {
+        created() {
+            this.getTeacherList('some')
+        },
         data () {
             return {
                 isShow: false,
-                lists: [
-                    {
-                        id: 0,
-                        src: 'http://avatar.csdn.net/C/B/D/1_u010014658.jpg',
-                        saleName: '芳姐',
-                        comment: '育婴师，最好的育婴师的等待的',
-                        workTime: '星期一，星期二，星期三'
-                    },
-                    {
-                        id: 1,
-                        src: 'http://avatar.csdn.net/C/B/D/1_u010014658.jpg',
-                        saleName: '芳姐',
-                        comment: '育婴师，最好的育婴师的等待的',
-                        workTime: '星期一，星期二，星期三'
-                    }
-                ]
+                lists: []
             }
         },
         components: {MtButton},
         methods: {
             slideDown() {
                 this.isShow = !this.isShow
-                this.lists = this.lists.concat(this.lists)
+                this.getTeacherList('all')
             },
             slideUp() {
                 this.isShow = !this.isShow
-                this.lists = this.lists.slice(0, 2)
+                this.getTeacherList('some')
+            },
+            getTeacherList(flag = 'all') {
+                let storeId = this.$route.params.id;
+                this.$http.get(`${baseURL}/wechat/nurseryTeacher?limit=10&page=1&offset=0&storeId=${storeId}`).then(res => {
+                    let result = res.body;
+                    console.log(result);
+                    if (result.code == 200) {
+                        let arr = []
+                        result.data.items.forEach((item, idx) => {
+                            let {
+                                name,
+                                photos,
+                                profile,
+                                workDays,
+                                id
+                            } = item;
+
+                            let obj = {
+                                name,
+                                photos,
+                                profile,
+                                workDays,
+                                id
+                            }
+
+                            if (flag === 'some') {
+                                if (idx >= 2) return
+                            }
+                            arr.push(obj)
+                            this.lists = arr
+
+                        })
+                    }
+                }).catch()
             }
         }
     }
@@ -120,5 +144,8 @@
             color #999
             .icon-down
                 transform: rotate(-90deg);
+                display: inline-block;
+            .icon-up
+                transform: rotate(90deg);
                 display: inline-block;
 </style>

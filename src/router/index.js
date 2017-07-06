@@ -62,7 +62,7 @@ export default new Router({
             ]
         },
         {
-            path: '/paydetail',
+            path: '/paydetail/:id',
             component: PayDetail
         },
         {
@@ -70,7 +70,7 @@ export default new Router({
             component: Pay
         },
         {
-            path: '/babydetail',
+            path: '/babydetail/:id',
             component: BabyDetail
         },
     ]

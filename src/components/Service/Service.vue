@@ -1,17 +1,18 @@
 <template>
     <div class="list-con">
-        <div v-for="list in lists" :key="list.id" class="list-item">
-            <img :src="list.src">
+        <div v-for="(list, idx) in lists" :key="idx" class="list-item">
+            <img :src="list.image">
             <div class="list-item-content">
-                <span class="sale-name">{{ list.saleName }}</span>
-                <p class="comment">{{ list.comment }}</p>
+                <span class="sale-name">{{ list.serviceName }}</span>
+                <p class="comment">{{ list.serviceDetail }}</p>
                 <div class="star-con">
-                    <span class="price">￥900</span>&nbsp;
-                    <span>已售200</span>
+                    <span class="price">￥{{list.unitPrice}}</span>&nbsp;
+                    <span>已售{{list.saleNumber}}</span>
                 </div>
             </div>
             <div class="btn-con">
-                <mt-button type="primary" size="small" class="btn" plain @click="payDetail">购买</mt-button>
+                <mt-button type="primary" size="small" class="btn" plain @click="payDetail(list.basicServiceId)">购买
+                </mt-button>
             </div>
         </div>
 
@@ -24,42 +25,65 @@
 </template>
 <script>
     import MtButton from "../../../node_modules/mint-ui/packages/button/src/button";
+    import {baseURL} from '../../api/config'
+
     export default {
+        created() {
+            this.getServiceList('some')
+        },
         data () {
             return {
                 isShow: false,
-                lists: [
-                    {
-                        id: 0,
-                        src: 'http://avatar.csdn.net/C/B/D/1_u010014658.jpg',
-                        saleName: '超值婴儿洗澡服务折扣',
-                        star: 4,
-                        distance: 200,
-                        comment: '这是一个小孩游泳馆，体验特别的有用瞬间，你值得拥有'
-                    },
-                    {
-                        id: 1,
-                        src: 'http://avatar.csdn.net/C/B/D/1_u010014658.jpg',
-                        saleName: '超值婴儿洗澡服务折扣',
-                        star: 4,
-                        distance: 200,
-                        comment: '这是一个小孩游泳馆，体验特别的有用瞬间，你值得拥有'
-                    }
-                ]
+                lists: []
             }
         },
         components: {MtButton},
         methods: {
-            payDetail() {
-                this.$router.push('/paydetail')
+            payDetail(id) {
+                this.$router.push(`/paydetail/${id}`)
             },
             slideDown() {
                 this.isShow = !this.isShow
-                this.lists = this.lists.concat(this.lists)
+                this.getServiceList('all')
             },
             slideUp() {
                 this.isShow = !this.isShow
-                this.lists = this.lists.slice(0, 2)
+                this.getServiceList('some')
+            },
+            getServiceList(flag = 'all') {
+                let storeId = this.$route.params.id;
+                this.$http.get(`${baseURL}/wechat/storeService?limit=10&page=1&offset=0&storeId=${storeId}`).then(res => {
+                    let result = res.body;
+                    if (result.code == 200) {
+                        let arr = []
+                        result.data.items.forEach((item, idx) => {
+                            let {
+                                basicServiceId,
+                                unitPrice,
+                                saleNumber,
+                                serviceDetail,
+                                imageList,
+                                serviceName
+                            } = item;
+
+                            let obj = {
+                                basicServiceId,
+                                unitPrice,
+                                saleNumber,
+                                serviceDetail,
+                                image: imageList[0].imagePath,
+                                serviceName
+                            }
+
+                            if (flag === 'some') {
+                                if (idx >= 2) return
+                            }
+                            arr.push(obj)
+                            this.lists = arr
+
+                        })
+                    }
+                }).catch()
             }
         }
     }

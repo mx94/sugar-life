@@ -7,7 +7,7 @@
         <div class="dots" v-show="false">
             <span class="dot" :class="{active: currentPageIndex === index }" v-for="(item, index) in dots"></span>
         </div>
-        <div class="text">{{this.storeName}}</div>
+        <div class="text" v-show="!!storeName">{{this.storeName}}</div>
     </div>
 </template>
 <script>
@@ -44,14 +44,15 @@
             },
             autoplay: {
                 type: Boolean,
-                default: false
+                default: true
             },
             interval: {
                 type: Number,
                 default: 4000
             },
             storeName: {
-                type: String
+                type: String,
+                default: ''
             }
         },
         data () {
@@ -143,6 +144,7 @@
                 img
                     display: block
                     width: 100%
+                    height 228px
         .dots
             position: absolute
             right: 0

@@ -15,7 +15,7 @@
         </div>
         <router-view></router-view>
         <!--门店设施-->
-        <seller-config :facilities="info.facilities"></seller-config>
+        <seller-config :facilities="facilities"></seller-config>
         <!--地理位置-->
         <div class="map">
             <div class="title">地理位置</div>
@@ -60,16 +60,14 @@
                         events: {
                             click: (e) => {
                                 console.log(e);
-                            },
-                            dragend: (e) => {
-                                this.markers[0].position = [e.lnglat.lng, e.lnglat.lat];
                             }
                         },
                         visible: true,
                         draggable: false,
                         animation: 'AMAP_ANIMATION_NONE'
                     }
-                ]
+                ],
+                facilities: ''
             }
         },
         components: {
@@ -85,7 +83,6 @@
             _getRecommend() {
                 this.$http.get(`${baseURL}/wechat/store/${this.$route.params.id}`).then(res => {
                     if (res.body.code == 200) {
-                        console.log(res.body);
                         let {
                             businessEndTime,
                             businessStartTime,
@@ -114,6 +111,7 @@
                         }
                         this.center = [gpsLat, gpsLong]
                         this.markers[0].position = [gpsLat, gpsLong]
+                        this.facilities = facilities
                     }
                 })
             }
