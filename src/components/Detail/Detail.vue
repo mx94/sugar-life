@@ -1,29 +1,35 @@
 <template>
     <div>
         <!--轮播图-->
-        <div v-if="recommends.length" class="slider-wrapper">
-            <slider>
-                <div v-for="item in recommends">
-                    <img :src="item.picUrl"/>
+        <div v-if="info.imageList" class="slider-wrapper">
+            <slider :storeName="info.storeName">
+                <div v-for="image in info.imageList">
+                    <img :src="image.imagePath"/>
                 </div>
             </slider>
         </div>
         <!--选项卡-->
         <div class="tab">
-            <router-link to="/detail/service" replace>服务</router-link>
-            <router-link to="/detail/baby" replace>育婴师</router-link>
+            <router-link :to="`/detail/${this.$route.params.id}/service`" replace>服务</router-link>
+            <router-link :to="`/detail/${this.$route.params.id}/baby`" replace>育婴师</router-link>
         </div>
         <router-view></router-view>
         <!--门店设施-->
-        <seller-config></seller-config>
+        <seller-config :facilities="info.facilities"></seller-config>
         <!--地理位置-->
         <div class="map">
             <div class="title">地理位置</div>
-            <div class="map-img"></div>
+            <div class="map-img">
+                <el-amap vid="amap" :zoom="zoom" :center="center">
+                    <el-amap-marker :key="idx" v-for="(marker, idx) in markers" :animation="marker.animation" :position="marker.position"
+                                    :events="marker.events" :visible="marker.visible"
+                                    :draggable="marker.draggable"></el-amap-marker>
+                </el-amap>
+            </div>
             <div class="address">
                 <i class="icon-address"></i>
-                <span class="text">地址：<span>上海市浦东新区碧波路888号</span></span>
-                <a href="tel:10086#mp.weixin.qq.com"></a>
+                <span class="text">地址：<span>{{info.storeAddress}}</span></span>
+                <a :href="`tel:${info.telephone}#mp.weixin.qq.com`"></a>
             </div>
         </div>
         <!--用户评论-->
@@ -34,11 +40,10 @@
 </template>
 <script>
     import Slider from '../../components/slider/slider.vue'
-    import {getRecommend} from '../../api/recommends.js'
-    import {ERR_OK} from '../../api/config.js'
     import SellerConfig from '../../components/SellerConfig/SellerConfig.vue'
     import UserComment from '../../components/UserComment/UserComment.vue'
     import JumpBack from '../../components/JumpBack/JumpBack.vue'
+    import {baseURL} from '../../api/config'
 
     export default {
         created() {
@@ -46,7 +51,25 @@
         },
         data () {
             return {
-                recommends: []
+                info: {},
+                zoom: 14,
+                center: [121.5273285, 31.21515044],
+                markers: [
+                    {
+                        position: [121.5273285, 31.21515044],
+                        events: {
+                            click: (e) => {
+                                console.log(e);
+                            },
+                            dragend: (e) => {
+                                this.markers[0].position = [e.lnglat.lng, e.lnglat.lat];
+                            }
+                        },
+                        visible: true,
+                        draggable: false,
+                        animation: 'AMAP_ANIMATION_NONE'
+                    }
+                ]
             }
         },
         components: {
@@ -60,10 +83,37 @@
                 this.$router.go(-1)
             },
             _getRecommend() {
-                getRecommend().then(res => {
-                    if (res.code === ERR_OK) {
-                        this.recommends = res.data.slider
-                        console.log(this.recommends)
+                this.$http.get(`${baseURL}/wechat/store/${this.$route.params.id}`).then(res => {
+                    if (res.body.code == 200) {
+                        console.log(res.body);
+                        let {
+                            businessEndTime,
+                            businessStartTime,
+                            cityName,
+                            facilities,
+                            gpsLat,
+                            gpsLong,
+                            id,
+                            imageList,
+                            storeAddress,
+                            storeName,
+                            telephone
+                        } = res.body.data;
+                        this.info = {
+                            businessEndTime,
+                            businessStartTime,
+                            cityName,
+                            facilities,
+                            gpsLat,
+                            gpsLong,
+                            id,
+                            imageList,
+                            storeAddress,
+                            storeName,
+                            telephone
+                        }
+                        this.center = [gpsLat, gpsLong]
+                        this.markers[0].position = [gpsLat, gpsLong]
                     }
                 })
             }

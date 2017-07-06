@@ -11,3 +11,5 @@ export const options = {
 }
 
 export const ERR_OK = 0
+
+export const baseURL = 'http://lebao.dev.sudaotech.com/platform'

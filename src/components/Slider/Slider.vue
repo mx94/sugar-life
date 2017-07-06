@@ -7,7 +7,7 @@
         <div class="dots" v-show="false">
             <span class="dot" :class="{active: currentPageIndex === index }" v-for="(item, index) in dots"></span>
         </div>
-        <div class="text">贝贝宝1号店(世纪大道店)</div>
+        <div class="text">{{this.storeName}}</div>
     </div>
 </template>
 <script>
@@ -49,6 +49,9 @@
             interval: {
                 type: Number,
                 default: 4000
+            },
+            storeName: {
+                type: String
             }
         },
         data () {
@@ -159,8 +162,11 @@
                     background: $color-text-ll
         .text
             position: absolute
-            bottom: 10px
+            bottom: 0px
             font-size: 18px
             color: #fff
-            padding-left 10px
+            padding: 8px 10px
+            box-sizing border-box
+            width 100%
+            background-color rgba(0,0,0,.2)
 </style>

@@ -43,11 +43,11 @@ export default new Router({
             component: Profile
         },
         {
-            path: '/sellers',
+            path: '/sellers/:serviceTypeId',
             component: Sellers
         },
         {
-            path: '/detail',
+            path: '/detail/:id',
             component: Detail,
             children: [
 

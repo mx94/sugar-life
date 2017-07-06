@@ -1,43 +1,37 @@
 <template>
     <div style="padding-top: 10px">
         <div class="rows">
-            <router-link tag="div" to="/sellers" class="link">
-                <div class="image"><img src="./icon_swimming_weixin@2x.png"></div>
-                <div class="text">婴儿游泳</div>
-            </router-link>
-            <router-link tag="div" to="/sellers" class="link">
-                <div class="image"><img src="./icon_classroom_weixin@2x.png"></div>
-                <div class="text">妈妈课堂</div>
-            </router-link>
-            <router-link tag="div" to="/sellers" class="link">
-                <div class="image"><img src="./icon_massage_weixin@2x.png"></div>
-                <div class="text">小儿推拿</div>
-            </router-link>
-        </div>
-        <div class="rows">
-            <router-link tag="div" to="/sellers" class="link">
-                <div class="image"><img src="./icon_amusement_weixin@2x.png"></div>
-                <div class="text">儿童游乐</div>
-            </router-link>
-            <router-link tag="div" to="/sellers" class="link">
-                <div class="image"><img src="./icon_vr_weixin@2x.png"></div>
-                <div class="text">VR虚拟体验</div>
-            </router-link>
-            <router-link tag="div" to="/sellers" class="link">
-                <div class="image"><img src="./icon_Store_weixin@2x.png"></div>
-                <div class="text">全部门店</div>
+            <router-link v-for="(item, index) in items" :to="`/sellers/${item.id}`" class="link" tag="div" :key="index">
+                <div class="image"><img :src="item.serviceTypeLogo"></div>
+                <div class="text">{{ item.serviceTypeName }}</div>
             </router-link>
         </div>
     </div>
 </template>
 <script>
+    import {baseURL} from '../../api/config'
 
     export default {
+        created() {
+            this.$http.get(baseURL + '/wechat/storeService/serviceTypeList').then(res => {
+                if (res.body.code == '200') {
+                    res.body.data.forEach(item => {
+                        let obj = {};
+                        let {id, serviceTypeLogo, serviceTypeName} = item;
+                        obj.id = id;
+                        obj.serviceTypeLogo = serviceTypeLogo;
+                        obj.serviceTypeName = serviceTypeName;
+                        this.items.push(obj)
+                    })
+                }
+            }).catch()
+        },
         data () {
-            return {}
+            return {
+                items: []
+            }
         },
-        components: {
-        },
+        components: {},
         methods: {}
     }
 </script>
@@ -47,20 +41,24 @@
 
     .rows
         display flex
+        width 100%
         align-items center
-        justify-content center
+        justify-content flex-start
+        flex-wrap: wrap
+        background-color #fff
         .link
+            box-sizing border-box
             display flex
             align-items center
             justify-content center
             flex-direction column
-            flex 1
+            width 33.3%
             height 88px
             border-bottom 1px solid #ededed
             border-right 1px solid #ededed
             background-color #fff
             &:last-child
-                border-right none
+                border-right 1px solid #ededed
             .image
                 display flex
                 flex 2

@@ -1,17 +1,17 @@
 <template>
     <div>
-        <router-link :to="`/detail/service?id=${list.id}`" v-for="list in lists" :key="list.id">
+        <router-link :to="`/detail/${list.id}/service`" v-for="list in lists" :key="list.id">
             <div class="list-item">
-                <img :src="list.src">
+                <img :src="list.logo">
                 <div class="list-item-content">
-                    <span class="sale-name">{{ list.saleName }}</span>
+                    <span class="sale-name">{{ list.storeName }}</span>
                     <div class="star-con">
                         <div class="star">
-                            <star :count="list.star"></star>
+                            <star :count="list.starRating"></star>
                         </div>
-                        <div class="distance" v-show="hasPos">距离：<span>{{ list.distance }}m</span></div>
+                        <div class="distance" v-show="hasPos">距离:<span>{{ list.distance }}m</span></div>
                     </div>
-                    <p class="comment">{{ list.comment }}</p>
+                    <p class="comment">{{ list.profile }}</p>
                 </div>
             </div>
         </router-link>
@@ -19,51 +19,54 @@
 </template>
 <script>
     import Star from '../../components/Star/Star.vue'
+    import {baseURL} from '../../api/config'
 
     export default {
-        props: ['hasPos'],
+        created() {
+            // 已经通过定位获取经纬度
+            if (this.gps) {
+                let gpsLong = this.gps.longitude || 13;
+                let gpsLat = this.gps.latitude || 12;
+
+                // 获取附近商户列表
+                if (this.type === 'distance') {
+                    this.updateList(`${baseURL}/wechat/store/nearBy?gpsLat=${gpsLat}&gpsLong=${gpsLong}`)
+                }
+
+                // 获取指定服务类型并且是附近的商户列表
+                if (this.type === 'serviceType') {
+                    this.updateList(`${baseURL}/wechat/store/findStoreByServiceType?gpsLat=${gpsLat}&gpsLong=${gpsLong}&limit=10&offset=0&page=0&serviceTypeId=${this.serviceTypeId}`)
+                }
+            } else {
+                alert(1)
+            }
+        },
+        props: ['hasPos', 'type', 'gps', 'serviceTypeId'],
         data () {
             return {
-                lists: [
-                    {
-                        id: 0,
-                        src: 'http://avatar.csdn.net/C/B/D/1_u010014658.jpg',
-                        saleName: '店铺名称1',
-                        star: 2,
-                        distance: 200,
-                        comment: '这是一个小孩游泳馆，体验特别的有用瞬间，你值得拥有'
-                    },
-                    {
-                        id: 1,
-                        src: 'http://avatar.csdn.net/C/B/D/1_u010014658.jpg',
-                        saleName: '店铺名称2',
-                        star: 4,
-                        distance: 200,
-                        comment: '这是一个小孩游泳馆，体验特别的有用瞬间，你值得拥有'
-                    },
-                    {
-                        id: 2,
-                        src: 'http://avatar.csdn.net/C/B/D/1_u010014658.jpg',
-                        saleName: '店铺名称3',
-                        star: 3,
-                        distance: 200,
-                        comment: '这是一个小孩游泳馆，体验特别的有用瞬间，你值得拥有'
-                    },
-                    {
-                        id: 3,
-                        src: 'http://avatar.csdn.net/C/B/D/1_u010014658.jpg',
-                        saleName: '店铺名称4',
-                        star: 5,
-                        distance: 200,
-                        comment: '这是一个小孩游泳馆，体验特别的有用瞬间，你值得拥有'
-                    }
-                ]
+                lists: []
             }
         },
         components: {
             Star
         },
-        methods: {}
+        methods: {
+            getList(api, cb) {
+                this.$http.get(api).then(cb).catch(e => { console.log(e) })
+            },
+            updateList(api) {
+                this.getList(api, res => {
+                    let result = res.body;
+                    if (result.code == '200') {
+                        result.data.items.forEach(item => {
+                            let {id, logo, storeName, starRating, distance, profile} = item;
+                            let obj = {id, logo, storeName, starRating, distance, profile};
+                            this.lists.push(obj);
+                        })
+                    }
+                })
+            }
+        }
     }
 </script>
 <style scoped lang="stylus" rel="stylesheet/stylus">
@@ -78,7 +81,7 @@
         background-color #fff
         align-items center
         img
-            width 75px
+            width 75px !important
             height 75px
             border-radius 50%
             border none
@@ -98,15 +101,20 @@
                 display flex
                 align-items center
                 .star
+                    display flex
+                    align-items center
                     flex 1
                     font-size $font-size-small
                     color $color-text-d
                 .distance
+                    position: absolute
+                    top 0
+                    right 0
                     display flex
-                    flex 1
                     justify-content flex-end
                     font-size $font-size-small
                     color $color-text-d
+                    align-items center
                     span
                         font-size $font-size-medium-x
                         color $color-text-d

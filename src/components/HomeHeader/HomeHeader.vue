@@ -11,7 +11,7 @@
             </router-link>
             <router-link to="/mine">
                 <div class="mine"></div>
-                <span>我的</span>
+                <span>我</span>
             </router-link>
         </div>
     </mt-header>
@@ -21,11 +21,54 @@
     import MtHeader from "../../../node_modules/mint-ui/packages/header/src/header";
 
     export default {
+        created() {
+            this.getPos()
+        },
         data () {
-            return {}
+            return {
+                obj: {}
+            }
         },
         components: {MtHeader},
-        methods: {}
+        methods: {
+            change() {
+                alert(this.obj.longitude)
+            },
+            getPos() {
+                var options = {
+                    enableHighAccuracy: true,
+                    maximumAge: 1000
+                }
+                if (navigator.geolocation) {
+                    //浏览器支持geolocation
+                    navigator.geolocation.getCurrentPosition(this.onSuccess, this.onError, options);
+                } else {
+                    //浏览器不支持geolocation
+                    alert('您的浏览器不支持地理位置定位');
+                }
+            },
+            onSuccess(position) {
+                this.obj.longitude = position.coords.longitude;
+                this.obj.latitude = position.coords.latitude;
+                this.$emit('hasPos', this.obj);
+            },
+            onError(error) {
+                switch (error.code) {
+                    case 1:
+                        console.log("位置服务被拒绝");
+                        break;
+                    case 2:
+                        console.log("暂时获取不到位置信息");
+                        break;
+                    case 3:
+                        console.log("获取信息超时");
+                        break;
+                    case 4:
+                        console.log("未知错误");
+                        break;
+                }
+            }
+        }
     }
 </script>
 <style scoped lang="stylus" rel="stylesheet/stylus">

@@ -23,7 +23,7 @@
         methods: {
             buildStar() {
                 for (let i = 1; i <= 5; i++) {
-                    if (i <= this.count) {
+                    if (i <= Math.floor(this.count)) {
                         this.arr.push('icon-collection_fill')
                     } else {
                         this.arr.push('icon-collection')

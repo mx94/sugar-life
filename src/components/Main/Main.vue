@@ -1,10 +1,10 @@
 <template>
     <div>
-        <home-header></home-header>
+        <home-header @hasPos="changePosState"></home-header>
         <div class="main">
             <type-show></type-show>
             <neighborhood :hasPos="hasPos"></neighborhood>
-            <sale-list :hasPos="hasPos"></sale-list>
+            <sale-list :hasPos="hasPos" type="distance" :gps="obj"></sale-list>
             <load-more :hasMore="hasMore"></load-more>
         </div>
     </div>
@@ -15,19 +15,16 @@
     import Neighborhood from '../../components/Neighborhood/Neighborhood.vue'
     import SaleList from '../../components/SaleList/SaleList.vue'
     import LoadMore from '../../components/LoadMore/LoadMore.vue'
+    import {baseURL} from '../../api/config'
 
     export default {
         created() {
-            this.$http.post('/platform/wechat/store/1').then(res => {
-                console.log(res.body);
-            }).catch(e => {
-                console.log(e);
-            })
         },
         data () {
             return {
                 hasPos: false,
-                hasMore: true
+                hasMore: true,
+                obj: {}
             }
         },
         components: {
@@ -38,6 +35,11 @@
             LoadMore
         },
         methods: {
+            changePosState(obj) {
+                this.hasPos = true;
+                this.obj = obj;
+                localStorage.setItem('gps', JSON.stringify(obj));
+            }
         }
     }
 </script>
