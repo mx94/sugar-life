@@ -6,6 +6,7 @@ import router from './router'
 import VueResource from 'vue-resource'
 import AMap from 'vue-amap'
 import { Header, Button, Field, Radio, Cell } from 'mint-ui'
+import { store } from './store/index'
 import 'mint-ui/lib/style.min.css'
 import './common/stylus/index.styl'
 
@@ -25,5 +26,6 @@ AMap.initAMapApiLoader({
 new Vue({
     el: '#app',
     router,
-    ...App
+    ...App,
+    store
 })

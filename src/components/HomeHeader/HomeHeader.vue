@@ -1,7 +1,7 @@
 <template>
     <mt-header class="home-header">
-        <div class="city" slot="left">
-            <span>上海</span>&nbsp;
+        <div class="city" slot="left" @click="selectCity">
+            <span>{{cityName}}</span>&nbsp;
             <i class="mintui mintui-back icon-down"></i>
         </div>
         <div class="login" slot="right">
@@ -19,21 +19,25 @@
 <script>
     import {Header} from 'mint-ui'
     import MtHeader from "../../../node_modules/mint-ui/packages/header/src/header";
+    import {mapState, mapActions, mapGetters} from 'vuex';
+    import * as types from '../../store/types';
 
     export default {
+        computed: {
+            ...mapState(['positions', 'cityName'])
+        },
         created() {
             this.getPos()
         },
         data () {
-            return {
-                obj: {}
-            }
+            return {}
         },
         components: {MtHeader},
         methods: {
-            change() {
-                alert(this.obj.longitude)
-            },
+            ...mapActions([
+                types.SET_POSITION,
+                types.HAS_POSITION
+            ]),
             getPos() {
                 var options = {
                     enableHighAccuracy: true,
@@ -48,11 +52,14 @@
                 }
             },
             onSuccess(position) {
-                this.obj.longitude = position.coords.longitude;
-                this.obj.latitude = position.coords.latitude;
-                this.$emit('hasPos', this.obj);
+                this[types.SET_POSITION]({
+                    longitude: position.coords.longitude,
+                    latitude: position.coords.latitude
+                });
+                this[types.HAS_POSITION](true);
             },
             onError(error) {
+                this[types.HAS_POSITION](false);
                 switch (error.code) {
                     case 1:
                         console.log("位置服务被拒绝");
@@ -67,6 +74,9 @@
                         console.log("未知错误");
                         break;
                 }
+            },
+            selectCity() {
+                this.$router.push('/cityselect')
             }
         }
     }

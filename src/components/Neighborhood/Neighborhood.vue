@@ -10,7 +10,8 @@
     export default {
         props: ['hasPos'],
         data () {
-            return {}
+            return {
+            }
         },
         components: {},
         methods: {}

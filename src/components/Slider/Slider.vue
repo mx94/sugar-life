@@ -144,7 +144,7 @@
                 img
                     display: block
                     width: 100%
-                    height 228px
+                    height 220px
         .dots
             position: absolute
             right: 0

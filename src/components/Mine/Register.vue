@@ -101,7 +101,6 @@
                     switch (res.body.code) {
                         case '200':
                             document.cookie = `token=${res.body.data}`;
-                            localStorage.setItem('isLogined', res.body.data);
                             this.alertToast('注册成功');
                             this.$router.push('/');
                             break;

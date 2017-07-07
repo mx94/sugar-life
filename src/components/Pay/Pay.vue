@@ -7,7 +7,7 @@
         </mt-header>
 
         <div class="pay-form">
-            <mt-field label="门店名称：" :readonly="true" v-model="info.sellersName"></mt-field>
+            <mt-field label="门店名称：" :readonly="true" v-model="info.storeName"></mt-field>
             <mt-field label="服务项目：" :readonly="true" v-model="info.serviceName"></mt-field>
 
             <a class="mint-cell mint-field">
@@ -22,7 +22,7 @@
                 </div>
             </a>
 
-            <mt-field label="服务单价：" :readonly="true" v-model="info.servicePrice"></mt-field>
+            <mt-field label="服务单价：" :readonly="true" v-model="info.unitPrice"></mt-field>
             <mt-field label="绑定手机号：" :readonly="true" v-model="info.phoneNumber"></mt-field>
             <mt-field label="订单时间：" :readonly="true" v-model="info.orderTime"></mt-field>
 
@@ -51,23 +51,40 @@
     import MtButton from "../../../node_modules/mint-ui/packages/button/src/button";
     import MtField from "../../../node_modules/mint-ui/packages/field/src/field";
     import MtRadio from "../../../node_modules/mint-ui/packages/radio/src/radio";
+    import {baseURL} from '../../api/config'
+
     export default {
+        created() {
+            this.$http.get(`${baseURL}/wechat/storeService/${this.$route.params.id}`).then(res => {
+                let result = res.body;
+                if (result.code == 200) {
+                    let {
+                        id,
+                        storeName,
+                        unitPrice,
+                        serviceName,
+                    } = result.data;
+                    this.info = {
+                        id,
+                        storeName,
+                        unitPrice,
+                        serviceName,
+                        count: 1,
+                        phoneNumber: '13774135698',
+                        orderTime: '2017-07-04 16:00',
+                        wechat: ''
+                    }
+                }
+            }).catch()
+        },
         computed: {
             total() {
-                return this.info.count * parseFloat(this.info.servicePrice.slice(1))
+                return this.info.count * parseFloat(this.info.unitPrice)
             }
         },
         data () {
             return {
-                info: {
-                    sellersName: '贝贝宝（浦东大道店）',
-                    serviceName: '婴儿洗澡',
-                    count: 1,
-                    servicePrice: '￥200',
-                    phoneNumber: '13774135698',
-                    orderTime: '2017-07-04 16:00',
-                    wechat: ''
-                }
+                info: {}
             }
         },
         components: {
@@ -117,6 +134,10 @@
                 border-bottom none
                 .mint-cell-value
                     justify-content flex-end
+                    .mint-cell
+                        background-image none
+                        .mint-cell-wrapper
+                            background-image none
         .icon-wechat
             display inline-block
             width 22px

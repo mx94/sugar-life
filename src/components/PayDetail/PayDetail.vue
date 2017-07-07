@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div style="height: 100%">
         <!--轮播图-->
         <div v-if="info.imageList" class="slider-wrapper">
             <slider>
@@ -12,15 +12,16 @@
         <div class="serv-con">
             <div class="title">
                 <span class="dot"></span>
+                <span class="name">{{info.serviceName}}</span>
             </div>
             <div class="content">
-                <p></p>
+                <p>{{info.serviceDetail}}</p>
             </div>
         </div>
 
         <div class="pay-con">
-            <span>￥888</span>
-            <mt-button type="primary" size="small" class="btn-pay" @click="$router.push('/pay')">购买</mt-button>
+            <span>￥{{info.unitPrice}}</span>
+            <mt-button type="primary" size="small" class="btn-pay" @click="$router.push({path: `/pay/${info.id}`})">购买</mt-button>
         </div>
         <jump-back @jumpBack="$router.go(-1)"></jump-back>
     </div>
@@ -34,9 +35,23 @@
     export default {
         created() {
             this.$http.get(`${baseURL}/wechat/storeService/${this.$route.params.id}`).then(res => {
-                if (res.body.code == 200) {
-                    let result = res.body;
+                let result = res.body;
+                if (result.code == 200) {
                     console.log(result);
+                    let {
+                        id,
+                        imageList,
+                        unitPrice,
+                        serviceName,
+                        serviceDetail
+                    } = result.data;
+                    this.info = {
+                        id,
+                        imageList,
+                        unitPrice,
+                        serviceName,
+                        serviceDetail
+                    }
                 }
             }).catch()
         },
@@ -47,7 +62,8 @@
         },
         components: {
             MtButton,
-            JumpBack
+            JumpBack,
+            Slider
         },
         methods: {}
     }
@@ -73,9 +89,11 @@
             border-radius 100px
             margin-right 15px
             width 150px
+
     .serv-con
         padding 0 15px
         background-color #fff
+        height calc(100% - 285px)
         .title
             width 100%
             height 48px
@@ -85,12 +103,15 @@
             border-bottom 1px solid #f0f0f0
             .dot
                 display inline-block
-                width 10px
-                height 10px
+                width 6px
+                height 6px
                 border-radius 50%
                 background-color #6389cd
+            .name
+                padding-left 5px
         .content
             font-size 14px
             color #666
             line-height 1.4
+            padding 15px 0
 </style>

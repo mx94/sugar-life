@@ -1,20 +1,20 @@
 <template>
-    <div>
+    <div style="height: 100%">
         <mt-header title="个人资料" class="m-header">
             <span @click="$router.go(-1)" slot="left">
                 <mt-button icon="back" name="back"></mt-button>
             </span>
         </mt-header>
 
-        <div class="con">
+        <div class="profile-con">
             <mt-cell title="图像" is-link>
                 <img class="avatar" src="http://avatar.csdn.net/C/B/D/1_u010014658.jpg">
             </mt-cell>
             <mt-cell title="昵称" value="光头强" is-link></mt-cell>
             <mt-cell title="绑定手机" is-link value="13888899660"></mt-cell>
         </div>
-        <div class="btn-con">
-            <mt-button class="btn" type="primary">退出登录</mt-button>
+        <div class="logout-btn-con">
+            <mt-button class="btn" type="primary" @click="logout">退出登录</mt-button>
         </div>
     </div>
 </template>
@@ -22,8 +22,16 @@
     import MtHeader from "../../../node_modules/mint-ui/packages/header/src/header";
     import MtButton from "../../../node_modules/mint-ui/packages/button/src/button";
     import MtCell from "../../../node_modules/mint-ui/packages/cell/src/cell";
+    import {getCookie, clearCookie} from '../../common/js/utils'
 
     export default {
+        beforeRouteEnter(to, from, next) {
+            if (getCookie('token')) {
+                next()
+            } else {
+                next('/')
+            }
+        },
         data () {
             return {}
         },
@@ -32,26 +40,35 @@
             MtHeader,
             MtButton
         },
-        methods: {}
+        methods: {
+            logout() {
+                clearCookie('token')
+                this.$router.push('/')
+            }
+        }
     }
 </script>
-<style scoped lang="stylus" rel="stylesheet/stylus">
+<style lang="stylus" rel="stylesheet/stylus">
     @import "~common/stylus/variable.styl"
 
     .m-header
         height 49px
         background-color $color-theme
         font-size 16px
-    .con
+    .profile-con
         padding 10px 15px
         background-color #fff
         color #333
         font-size 14px
+        box-sizing border-box
+        height calc(100% - 114px)
         .avatar
             width 75px
             height 75px
             border-radius 50%
-    .btn-con
+        .mint-cell-text, .mint-cell-value
+            font-size 14px
+    .logout-btn-con
         position: fixed
         bottom 0
         width 100%

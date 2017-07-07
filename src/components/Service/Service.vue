@@ -1,6 +1,6 @@
 <template>
     <div class="list-con">
-        <div v-for="(list, idx) in lists" :key="idx" class="list-item">
+        <router-link v-for="(list, idx) in lists" :key="idx" class="list-item" tag="div" :to="`/paydetail/${list.id}`">
             <img :src="list.image">
             <div class="list-item-content">
                 <span class="sale-name">{{ list.serviceName }}</span>
@@ -11,10 +11,10 @@
                 </div>
             </div>
             <div class="btn-con">
-                <mt-button type="primary" size="small" class="btn" plain @click="payDetail(list.basicServiceId)">购买
+                <mt-button type="primary" size="small" class="btn" plain @click.stop="gotoPay(list.id)">购买
                 </mt-button>
             </div>
-        </div>
+        </router-link>
 
         <!--查看全部-->
         <div class="view-more">
@@ -39,8 +39,8 @@
         },
         components: {MtButton},
         methods: {
-            payDetail(id) {
-                this.$router.push(`/paydetail/${id}`)
+            gotoPay(id) {
+                this.$router.push(`/pay/${id}`)
             },
             slideDown() {
                 this.isShow = !this.isShow
@@ -58,7 +58,7 @@
                         let arr = []
                         result.data.items.forEach((item, idx) => {
                             let {
-                                basicServiceId,
+                                id,
                                 unitPrice,
                                 saleNumber,
                                 serviceDetail,
@@ -67,7 +67,7 @@
                             } = item;
 
                             let obj = {
-                                basicServiceId,
+                                id,
                                 unitPrice,
                                 saleNumber,
                                 serviceDetail,

@@ -1,15 +1,3 @@
-export const commonParams = {
-    g_tk: 5381,
-    format: 'jsonp',
-    inCharset: 'utf-8',
-    outCharset: 'utf-8',
-    notice: 0
-}
-
-export const options = {
-    param: 'jsonpCallback'
-}
-
-export const ERR_OK = 0
-
-export const baseURL = 'http://lebao.dev.sudaotech.com/platform'
+let develop = 'http://lebao.dev.sudaotech.com/platform'
+let production = '/platform'
+export const baseURL = production

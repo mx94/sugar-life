@@ -25,8 +25,8 @@
         created() {
             // 已经通过定位获取经纬度
             if (this.gps) {
-                let gpsLong = this.gps.longitude || 13;
-                let gpsLat = this.gps.latitude || 12;
+                let gpsLong = this.gps.longitude;
+                let gpsLat = this.gps.latitude;
 
                 // 获取附近商户列表
                 if (this.type === 'distance') {
@@ -38,7 +38,7 @@
                     this.updateList(`${baseURL}/wechat/store/findStoreByServiceType?gpsLat=${gpsLat}&gpsLong=${gpsLong}&limit=10&offset=0&page=0&serviceTypeId=${this.serviceTypeId}`)
                 }
             } else {
-                alert(1)
+
             }
         },
         props: ['hasPos', 'type', 'gps', 'serviceTypeId'],

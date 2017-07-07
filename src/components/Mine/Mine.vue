@@ -26,8 +26,16 @@
     import MtButton from "../../../node_modules/mint-ui/packages/button/src/button";
     import Toast from 'mint-ui/packages/toast'
     import {baseURL} from '../../api/config'
+    import {getCookie} from '../../common/js/utils'
 
     export default {
+        beforeRouteEnter(to, from, next) {
+            if (!getCookie('token')) {
+                next()
+            } else {
+                next({path: '/profile'})
+            }
+        },
         data () {
             return {
                 info: {
@@ -60,9 +68,7 @@
                 }
                 this.$http.post(baseURL + '/app/auth/login', this.info).then(res => {
                     if (res.body.code == '200') {
-                        console.log(res.body);
                         document.cookie = `token=${res.body.data}`;
-                        localStorage.setItem('isLogined', res.body.data);
                         this.alertToast('登录成功');
                         this.$router.push('/');
                     } else {

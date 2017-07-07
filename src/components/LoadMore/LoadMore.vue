@@ -13,7 +13,9 @@
             }
         },
         data () {
-            return {}
+            return {
+                isLogined: false
+            }
         },
         components: {},
         methods: {

@@ -13,6 +13,7 @@ import Baby from '@/components/Baby/Baby'
 import BabyDetail from '@/components/BabyDetail/BabyDetail'
 import PayDetail from '@/components/PayDetail/PayDetail'
 import Pay from '@/components/Pay/Pay'
+import CitySelect from '@/components/CitySelect/CitySelect'
 
 Vue.use(Router)
 
@@ -66,12 +67,16 @@ export default new Router({
             component: PayDetail
         },
         {
-            path: '/pay',
+            path: '/pay/:id',
             component: Pay
         },
         {
             path: '/babydetail/:id',
             component: BabyDetail
         },
+        {
+            path: '/cityselect',
+            component: CitySelect
+        }
     ]
 })

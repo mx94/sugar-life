@@ -1,10 +1,10 @@
 <template>
     <div>
-        <home-header @hasPos="changePosState"></home-header>
+        <home-header></home-header>
         <div class="main">
             <type-show></type-show>
             <neighborhood :hasPos="hasPos"></neighborhood>
-            <sale-list :hasPos="hasPos" type="distance" :gps="obj"></sale-list>
+            <sale-list :hasPos="hasPos" type="distance" :gps="positions"></sale-list>
             <load-more :hasMore="hasMore"></load-more>
         </div>
     </div>
@@ -16,15 +16,16 @@
     import SaleList from '../../components/SaleList/SaleList.vue'
     import LoadMore from '../../components/LoadMore/LoadMore.vue'
     import {baseURL} from '../../api/config'
+    import {mapState, mapActions, mapGetters} from 'vuex';
+    import * as types from '../../store/types';
 
     export default {
-        created() {
+        computed: {
+            ...mapState(['positions', 'hasPos'])
         },
         data () {
             return {
-                hasPos: false,
                 hasMore: true,
-                obj: {}
             }
         },
         components: {
@@ -34,13 +35,7 @@
             SaleList,
             LoadMore
         },
-        methods: {
-            changePosState(obj) {
-                this.hasPos = true;
-                this.obj = obj;
-                localStorage.setItem('gps', JSON.stringify(obj));
-            }
-        }
+        methods: {}
     }
 </script>
 <style scoped lang="stylus" rel="stylesheet/stylus">

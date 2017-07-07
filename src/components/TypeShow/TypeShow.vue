@@ -23,8 +23,10 @@
                         obj.serviceTypeName = serviceTypeName;
                         this.items.push(obj)
                     })
+                } else {
+                    // console.log(res.body.message)
                 }
-            }).catch()
+            }).catch(e => {console.log(e)})
         },
         data () {
             return {
