@@ -9,7 +9,8 @@ export const mutations = {
         state.hasPos = flag
     },
 
-    [types.CITY_NAME](state, city) {
+    [types.CHANGE_CITY](state, city) {
         state.cityName = city
-    }
+    },
+
 }

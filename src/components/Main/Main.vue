@@ -4,9 +4,10 @@
         <div class="main">
             <type-show></type-show>
             <neighborhood :hasPos="hasPos"></neighborhood>
-            <sale-list :hasPos="hasPos" type="distance" :gps="positions"></sale-list>
-            <load-more :hasMore="hasMore"></load-more>
+            <sale-list :hasPos="hasPos" type="distance" :gps="positions" :page="page" @noData="noData"></sale-list>
+            <load-more :hasMore="hasMore" @needData="needData"></load-more>
         </div>
+        <d-tooltip></d-tooltip>
     </div>
 </template>
 <script>
@@ -15,6 +16,7 @@
     import Neighborhood from '../../components/Neighborhood/Neighborhood.vue'
     import SaleList from '../../components/SaleList/SaleList.vue'
     import LoadMore from '../../components/LoadMore/LoadMore.vue'
+    import DTooltip from '../../components/DTooltip/DTooltip.vue'
     import {baseURL} from '../../api/config'
     import {mapState, mapActions, mapGetters} from 'vuex';
     import * as types from '../../store/types';
@@ -26,6 +28,7 @@
         data () {
             return {
                 hasMore: true,
+                page: 0
             }
         },
         components: {
@@ -33,9 +36,19 @@
             TypeShow,
             Neighborhood,
             SaleList,
-            LoadMore
+            LoadMore,
+            DTooltip
         },
-        methods: {}
+        methods: {
+            needData() {
+                if (this.hasMore) {
+                    this.page++
+                }
+            },
+            noData() {
+                this.hasMore = false
+            }
+        }
     }
 </script>
 <style scoped lang="stylus" rel="stylesheet/stylus">

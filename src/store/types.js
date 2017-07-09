@@ -5,4 +5,5 @@ export const SET_POSITION = 'setPosition'
 export const HAS_POSITION = 'hasPosition'
 
 // 城市名称
-export const CITY_NAME = 'cityName'
+export const CHANGE_CITY = 'changeCity'
+

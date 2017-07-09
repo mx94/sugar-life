@@ -7,39 +7,60 @@
         </mt-header>
 
         <div class="city-con">
-            <div class="title">当前城市：<span>上海</span></div>
+            <div class="title">当前城市：<span>{{cityName}}</span></div>
             <div class="position">定位城市</div>
             <div class="city-pos">上海</div>
             <div class="position">其他城市</div>
         </div>
 
-        <dl>
-            <dt>h</dt>
-            <dd>杭州市</dd>
-        </dl>
-        <dl>
-            <dt>h</dt>
-            <dd>上海</dd>
-            <dd>上海市</dd>
-        </dl>
-        <dl>
-            <dt>x</dt>
-            <dd>孝义市</dd>
+        <dl v-for="list in lists">
+            <dt>{{list.initials}}</dt>
+            <dd @click="selectCity(city)" v-for="city in list.cityList">{{city}}</dd>
         </dl>
     </div>
 </template>
 <script>
-    import MtHeader from "../../../node_modules/mint-ui/packages/header/src/header";
-    import MtButton from "../../../node_modules/mint-ui/packages/button/src/button";
+    import MtHeader from "../../../node_modules/mint-ui/packages/header/src/header"
+    import MtButton from "../../../node_modules/mint-ui/packages/button/src/button"
+    import {mapState, mapActions, mapGetters} from 'vuex'
+    import * as types from '../../store/types'
+
     export default {
+        computed: {
+            ...mapGetters(['cityName'])
+        },
         data () {
-            return {}
+            return {
+                lists: [
+                    {
+                        initials: "s",
+                        cityList: [
+                            "汕头"
+                        ]
+                    },
+                    {
+                        initials: "h",
+                        cityList: [
+                            "杭州市",
+                            "海口"
+                        ]
+                    }
+                ]
+            }
         },
         components: {
             MtButton,
             MtHeader
         },
-        methods: {}
+        methods: {
+            ...mapActions([
+                types.CHANGE_CITY
+            ]),
+            selectCity(city) {
+                this[types.CHANGE_CITY](city)
+                this.$router.go(-1)
+            }
+        }
     }
 </script>
 <style scoped lang="stylus" rel="stylesheet/stylus">

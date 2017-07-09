@@ -27,16 +27,31 @@
 <script>
     import MtHeader from "../../../node_modules/mint-ui/packages/header/src/header";
     import MtButton from "../../../node_modules/mint-ui/packages/button/src/button";
+    import Toast from 'mint-ui/packages/toast'
+    import {baseURL} from '../../api/config'
 
     export default {
         data () {
-            return {}
+            return {
+                info: {
+                    username: '',
+                    password: ''
+                }
+            }
         },
         components: {
             MtHeader,
             MtButton
         },
         methods: {
+            alertToast(msg) {
+                Toast({
+                    message: msg,
+                    position: 'bottom',
+                    duration: 2000,
+                    className: 'toast-class'
+                })
+            },
             confirmUpdate() {
                 this.$router.push('/mine')
             }

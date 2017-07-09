@@ -1,26 +1,48 @@
 <template>
-    <div class="has-more">
-        <div @click="loadMore" v-show="hasMore">加载更多</div>
+    <div class="has-more" ref="more">
+        <div v-show="hasMore">加载更多</div>
         <div v-show="!hasMore">我是有底线的</div>
     </div>
 </template>
 <script>
     export default {
+        mounted() {
+            window.addEventListener('scroll', this.scrolling);
+        },
+        beforeDestroy() {
+            window.removeEventListener('scroll', this.scrolling);
+        },
         props: {
             hasMore: {
                 type: Boolean,
                 default: true
+            },
+            isLoading: {
+                type: Boolean,
+                defalt: true
             }
         },
         data () {
             return {
-                isLogined: false
+                isLogined: false,
+                $timer: null
             }
         },
         components: {},
         methods: {
-            loadMore() {
+            scrolling() {
+                clearTimeout(this.$timer);
+                this.$timer = setTimeout(() => {
+                    if (this.isLoading) {
+                        return;
+                    }
 
+                    let screen = window.screen.height;
+                    let top = this.$refs.more.getBoundingClientRect().top;
+                    if (top < screen) {
+                        this.$emit('needData')
+                    }
+                }, 50);
             }
         }
     }

@@ -24,7 +24,8 @@
 
     export default {
         computed: {
-            ...mapState(['positions', 'cityName'])
+            ...mapState(['positions']),
+            ...mapGetters(['cityName'])
         },
         created() {
             this.getPos()
@@ -110,7 +111,7 @@
                 align-items center
                 justify-content center
                 flex-direction column
-                padding 0 4px
+                padding 0 8px
                 .pay
                     bg-image('icon_order_white')
                     width 22px

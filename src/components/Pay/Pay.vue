@@ -42,7 +42,7 @@
 
         <div class="pay-form-submit">
             <span>￥{{ total }}</span>
-            <mt-button type="primary" size="small" class="btn-pay">支付</mt-button>
+            <mt-button type="primary" size="small" class="btn-pay" @click="payIt">支付</mt-button>
         </div>
     </div>
 </template>
@@ -94,6 +94,9 @@
             MtHeader
         },
         methods: {
+            payIt() {
+                this.$router.replace('/paysuccess')
+            },
             mini() {
                 if (this.info.count <= 0) return
                 this.info.count--

@@ -7,14 +7,16 @@
         </mt-header>
         <sale-list :hasPos="hasPos" :serviceTypeId="serviceTypeId" :gps="positions" :type="serviceType"></sale-list>
         <load-more :hasMore="hasMore"></load-more>
+        <d-tooltip></d-tooltip>
     </div>
 </template>
 <script>
-    import { Header } from 'mint-ui';
+    import {Header} from 'mint-ui';
     import MtHeader from "../../../node_modules/mint-ui/packages/header/src/header";
     import MtButton from "../../../node_modules/mint-ui/packages/button/src/button";
     import SaleList from '../../components/SaleList/SaleList.vue'
     import LoadMore from '../../components/LoadMore/LoadMore.vue'
+    import DTooltip from '../../components/DTooltip/DTooltip.vue'
     import {mapState, mapActions, mapGetters} from 'vuex';
     import * as types from '../../store/types';
 
@@ -47,7 +49,8 @@
             MtButton,
             MtHeader,
             SaleList,
-            LoadMore
+            LoadMore,
+            DTooltip
         }
     }
 </script>

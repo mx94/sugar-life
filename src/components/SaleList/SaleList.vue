@@ -19,29 +19,19 @@
 </template>
 <script>
     import Star from '../../components/Star/Star.vue'
+    import Toast from '../../../node_modules/mint-ui/packages/toast'
     import {baseURL} from '../../api/config'
 
     export default {
-        created() {
-            // 已经通过定位获取经纬度
-            if (this.gps) {
-                let gpsLong = this.gps.longitude;
-                let gpsLat = this.gps.latitude;
-
-                // 获取附近商户列表
-                if (this.type === 'distance') {
-                    this.updateList(`${baseURL}/wechat/store/nearBy?gpsLat=${gpsLat}&gpsLong=${gpsLong}`)
-                }
-
-                // 获取指定服务类型并且是附近的商户列表
-                if (this.type === 'serviceType') {
-                    this.updateList(`${baseURL}/wechat/store/findStoreByServiceType?gpsLat=${gpsLat}&gpsLong=${gpsLong}&limit=10&offset=0&page=0&serviceTypeId=${this.serviceTypeId}`)
-                }
-            } else {
-
+        watch: {
+            page(newPage, oldPage) {
+                this._getData(newPage)
             }
         },
-        props: ['hasPos', 'type', 'gps', 'serviceTypeId'],
+        created() {
+            this._getData(this.page)
+        },
+        props: ['hasPos', 'type', 'gps', 'serviceTypeId', 'page'],
         data () {
             return {
                 lists: []
@@ -51,18 +41,58 @@
             Star
         },
         methods: {
+            _getData(page) {
+                // 已经通过定位获取经纬度
+                if (this.gps) {
+                    let gpsLong = this.gps.longitude;
+                    let gpsLat = this.gps.latitude;
+
+                    // 获取附近商户列表
+                    if (this.type === 'distance') {
+                        this.updateList(`${baseURL}/wechat/store/nearBy?gpsLat=${gpsLat}&gpsLong=${gpsLong}&page=${page}`)
+                    }
+
+                    // 获取指定服务类型并且是附近的商户列表
+                    if (this.type === 'serviceType') {
+                        this.updateList(`${baseURL}/wechat/store/findStoreByServiceType?gpsLat=${gpsLat}&gpsLong=${gpsLong}&limit=10&offset=0&page=0&serviceTypeId=${this.serviceTypeId}`)
+                    }
+                } else {
+
+                }
+            },
             getList(api, cb) {
-                this.$http.get(api).then(cb).catch(e => { console.log(e) })
+                this.$http.get(api).then(cb).catch(e => {
+                    if (e.status == '404') {
+                        Toast({
+                            message: '获取列表失败',
+                            position: 'bottom',
+                            duration: 2000,
+                            className: 'toast-class'
+                        })
+                        this.$emit('noData')
+                    }
+                })
             },
             updateList(api) {
                 this.getList(api, res => {
                     let result = res.body;
                     if (result.code == '200') {
+                        if (!result.data.items.length) {
+                            this.$emit('noData')
+                            return
+                        }
                         result.data.items.forEach(item => {
                             let {id, logo, storeName, starRating, distance, profile} = item;
-                            let obj = {id, logo, storeName, starRating, distance, profile};
-                            this.lists.push(obj);
+                            this.lists.push({id, logo, storeName, starRating, distance, profile});
                         })
+                    } else {
+                        Toast({
+                            message: result.message,
+                            position: 'bottom',
+                            duration: 2000,
+                            className: 'toast-class'
+                        })
+                        this.$emit('noData')
                     }
                 })
             }
@@ -125,4 +155,6 @@
                 width 170px
                 font-size $font-size-small
                 color $color-text-l
+    .toast-class
+        font-size 12px
 </style>

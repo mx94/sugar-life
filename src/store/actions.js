@@ -11,8 +11,8 @@ export const actions = {
         commit(types.HAS_POSITION, flag)
     },
 
-    // 城市名称
-    [types.CITY_NAME]({commit}, city) {
-        commit(types.HAS_POSITION, city)
-    },
+    // 切换城市
+    [types.CHANGE_CITY]({commit}, city) {
+        commit(types.CHANGE_CITY, city)
+    }
 }
