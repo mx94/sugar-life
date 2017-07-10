@@ -28,7 +28,7 @@
         data () {
             return {
                 hasMore: true,
-                page: 0
+                page: 1
             }
         },
         components: {

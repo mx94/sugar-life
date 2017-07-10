@@ -9,9 +9,9 @@
                         <div class="star">
                             <star :count="list.starRating"></star>
                         </div>
-                        <div class="distance" v-show="hasPos">距离:<span>{{ list.distance }}m</span></div>
+                        <div class="distance" v-show="hasPos && cityName === '上海'">距离:<span>{{ list.distance }}m</span></div>
+                        <!--<div class="distance cityname" v-show="cityName !== '上海' && type === 'serviceType'">{{cityName}}</div>-->
                     </div>
-                    <p class="comment">{{ list.profile }}</p>
                 </div>
             </div>
         </router-link>
@@ -21,8 +21,12 @@
     import Star from '../../components/Star/Star.vue'
     import Toast from '../../../node_modules/mint-ui/packages/toast'
     import {baseURL} from '../../api/config'
+    import {mapGetters} from 'vuex'
 
     export default {
+        computed: {
+            ...mapGetters(['cityName'])
+        },
         watch: {
             page(newPage, oldPage) {
                 this._getData(newPage)
@@ -54,7 +58,7 @@
 
                     // 获取指定服务类型并且是附近的商户列表
                     if (this.type === 'serviceType') {
-                        this.updateList(`${baseURL}/wechat/store/findStoreByServiceType?gpsLat=${gpsLat}&gpsLong=${gpsLong}&limit=10&offset=0&page=0&serviceTypeId=${this.serviceTypeId}`)
+                        this.updateList(`${baseURL}/wechat/store/findStoreByServiceType?gpsLat=${gpsLat}&gpsLong=${gpsLong}&page=${page}&serviceTypeId=${this.serviceTypeId}`)
                     }
                 } else {
 
@@ -111,8 +115,8 @@
         background-color #fff
         align-items center
         img
-            width 75px !important
-            height 75px
+            width 20vw
+            height 20vw
             border-radius 50%
             border none
             background-color aliceblue
@@ -121,13 +125,14 @@
             position: relative;
             width 100%
             height 98%
-            display -webkit-box
-            -webkit-box-orient vertical
-            -webkit-box-pack justify
+            display flex
+            flex-direction column
             .sale-name
+                flex 1
                 font-size $font-size-medium-x
                 color $color-text-theme
             .star-con
+                flex 1
                 display flex
                 align-items center
                 .star
@@ -138,16 +143,19 @@
                     color $color-text-d
                 .distance
                     position: absolute
-                    top 0
+                    top 50%
                     right 0
                     display flex
                     justify-content flex-end
                     font-size $font-size-small
                     color $color-text-d
                     align-items center
+                    transform translateY(-50%)
                     span
                         font-size $font-size-medium-x
                         color $color-text-d
+                    &.cityname
+                        font-size 14px
             .comment
                 overflow hidden
                 text-overflow ellipsis
@@ -155,6 +163,7 @@
                 width 170px
                 font-size $font-size-small
                 color $color-text-l
+
     .toast-class
         font-size 12px
 </style>

@@ -5,7 +5,7 @@
             <i class="mintui mintui-back icon-down"></i>
         </div>
         <div class="login" slot="right">
-            <router-link to="/indent">
+            <router-link to="/indent/1">
                 <div class="pay"></div>
                 <span>订单</span>
             </router-link>

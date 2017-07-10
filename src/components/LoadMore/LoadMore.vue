@@ -1,6 +1,6 @@
 <template>
     <div class="has-more" ref="more">
-        <div v-show="hasMore">加载更多</div>
+        <div v-show="hasMore" @click="scrolling">加载更多</div>
         <div v-show="!hasMore">我是有底线的</div>
     </div>
 </template>

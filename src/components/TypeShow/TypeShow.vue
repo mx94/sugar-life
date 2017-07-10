@@ -23,6 +23,12 @@
                         obj.serviceTypeName = serviceTypeName;
                         this.items.push(obj)
                     })
+                    let serviceTypeLogo = require('./icon_Store_weixin@3x.png')
+                    this.items.push({
+                        id: 4396,
+                        serviceTypeLogo,
+                        serviceTypeName: '全部门店'
+                    })
                 } else {
                     // console.log(res.body.message)
                 }

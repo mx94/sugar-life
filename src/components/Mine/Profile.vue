@@ -7,7 +7,7 @@
         </mt-header>
 
         <div class="profile-con">
-            <mt-cell title="图像" is-link>
+            <mt-cell title="头像" is-link>
                 <img class="avatar" src="http://avatar.csdn.net/C/B/D/1_u010014658.jpg">
             </mt-cell>
             <mt-cell title="昵称" value="光头强" is-link></mt-cell>
@@ -62,12 +62,15 @@
         font-size 14px
         box-sizing border-box
         height calc(100% - 114px)
-        .avatar
-            width 75px
-            height 75px
-            border-radius 50%
-        .mint-cell-text, .mint-cell-value
-            font-size 14px
+        .mint-cell-wrapper
+            &:first-child
+                background-image none
+            .avatar
+                width 75px
+                height 75px
+                border-radius 50%
+            .mint-cell-text, .mint-cell-value
+                font-size 14px
     .logout-btn-con
         position: fixed
         bottom 0

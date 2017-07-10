@@ -35,6 +35,7 @@
                     {
                         initials: "s",
                         cityList: [
+                            "上海",
                             "汕头"
                         ]
                     },

@@ -131,6 +131,7 @@
             position: relative
             overflow: hidden
             white-space: nowrap
+            height 220px
             .slider-item
                 float: left
                 box-sizing: border-box
@@ -144,7 +145,6 @@
                 img
                     display: block
                     width: 100%
-                    height 220px
         .dots
             position: absolute
             right: 0

@@ -12,6 +12,7 @@
   "dependencies": {
     "better-scroll": "^0.2.4",
     "extract-text-webpack-plugin": "^2.1.2",
+    "fastclick": "^1.0.6",
     "mint-ui": "^2.2.7",
     "vue": "^2.3.3",
     "vue-amap": "^0.2.8",

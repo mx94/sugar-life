@@ -29,7 +29,7 @@ export default new Router({
             component: Main
         },
         {
-            path: '/indent',
+            path: '/indent/:id',
             component: Indent
         },
         {

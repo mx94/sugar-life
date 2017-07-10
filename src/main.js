@@ -5,10 +5,13 @@ import App from './App.vue'
 import router from './router'
 import VueResource from 'vue-resource'
 import AMap from 'vue-amap'
+import fastclick from 'fastclick'
 import { Header, Button, Field, Radio, Cell } from 'mint-ui'
 import { store } from './store/index'
 import 'mint-ui/lib/style.min.css'
 import './common/stylus/index.styl'
+
+fastclick.attach(document.body)
 
 Vue.use(VueResource)
 Vue.use(Header)

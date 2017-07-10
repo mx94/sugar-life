@@ -36,4 +36,5 @@
 <style scoped lang="stylus" rel="stylesheet/stylus">
     .font
         color #ff6743
+        font-size 12px
 </style>

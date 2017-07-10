@@ -5,7 +5,7 @@
             <span>尽在贝贝宝手机客户端</span>
         </div>
         <div class="btn-con">
-            <mt-button type="default" size="small" :plain="true" class="btn">去下载</mt-button>
+            <mt-button type="default" size="small" :plain="true" class="btn" @click="$router.push('/download')">去下载</mt-button>
         </div>
     </div>
 </template>
@@ -29,7 +29,7 @@
         right 0
         bottom 0
         width 100vw
-        height 20vw
+        height 75px
         box-sizing border-box
         padding 0 15px
         background-color rgba(0, 0, 0, .6)

@@ -73,9 +73,22 @@
     </div>
 </template>
 <script>
-    import MtButton from "../../../node_modules/mint-ui/packages/button/src/button";
-    import MtHeader from "../../../node_modules/mint-ui/packages/header/src/header";
+    import MtButton from "../../../node_modules/mint-ui/packages/button/src/button"
+    import MtHeader from "../../../node_modules/mint-ui/packages/header/src/header"
+    import {baseURL} from '../../api/config'
+    import {formatDate} from '../../common/js/utils'
+
     export default {
+        created() {
+            this.$http.get(`${baseURL}/wechat/order/${this.$route.params.id}`).then(res => {
+                let result = res.body
+                if (result.code == 200) {
+                    console.log(result);
+                } else {
+                    console.log(result)
+                }
+            }).catch()
+        },
         data () {
             return {
                 info: {

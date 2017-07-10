@@ -13,10 +13,10 @@
                 </div>
                 <div class="info">
                     <div class="serv-name">{{info.serviceName}}</div>
-                    <div class="count">数量：{{info.count}}</div>
+                    <div class="count">数量：{{info.buyNumber}}</div>
                     <div class="other">
-                        <div class="price">总价：{{info.total}}</div>
-                        <div class="create-time">{{info.createTime}}</div>
+                        <div class="price">总价：{{info.totalPrice}}</div>
+                        <div class="create-time">{{info.orderCreateTime}}</div>
                     </div>
                 </div>
             </div>
@@ -29,48 +29,40 @@
     import MtHeader from "../../../node_modules/mint-ui/packages/header/src/header";
     import MtButton from "../../../node_modules/mint-ui/packages/button/src/button";
     import DTooltip from '../../components/DTooltip/DTooltip.vue'
+    import {baseURL} from '../../api/config'
+    import {formatDate} from '../../common/js/utils'
 
     export default {
+        created() {
+            this.$http.get(`${baseURL}/wechat/order?limit=10&page=1&offset=0&orderCreateId=${this.$route.params.id}`).then(res => {
+                let result = res.body
+                if (result.code == 200) {
+                    result.data.items.forEach(item => {
+                        let {
+                            id,
+                            storeName,
+                            serviceName,
+                            buyNumber,
+                            totalPrice,
+                            orderCreateTime,
+                            serviceImageList
+                        } = item
+                        this.infos.push({
+                            id,
+                            storeName,
+                            serviceName,
+                            buyNumber,
+                            totalPrice,
+                            orderCreateTime: formatDate(new Date(orderCreateTime)),
+                            logo: 'http://avatar.csdn.net/C/B/D/1_u010014658.jpg'
+                        })
+                    })
+                }
+            }).catch()
+        },
         data () {
             return {
-                infos: [
-                    {
-                        id: 1,
-                        storeName: '母婴店（浦东南路店）',
-                        logo: 'http://avatar.csdn.net/C/B/D/1_u010014658.jpg',
-                        serviceName: '少儿游泳',
-                        count: '2',
-                        total: '600',
-                        createTime: '2016-10-09 12:00:00'
-                    },
-                    {
-                        id: 2,
-                        storeName: '母婴店（浦东南路店）',
-                        logo: 'http://avatar.csdn.net/C/B/D/1_u010014658.jpg',
-                        serviceName: '少儿游泳',
-                        count: '2',
-                        total: '600',
-                        createTime: '2016-10-09 12:00:00'
-                    },
-                    {
-                        id: 3,
-                        storeName: '母婴店（浦东南路店）',
-                        logo: 'http://avatar.csdn.net/C/B/D/1_u010014658.jpg',
-                        serviceName: '少儿游泳',
-                        count: '2',
-                        total: '600',
-                        createTime: '2016-10-09 12:00:00'
-                    },
-                    {
-                        id: 4,
-                        storeName: '母婴店（浦东南路店）',
-                        logo: 'http://avatar.csdn.net/C/B/D/1_u010014658.jpg',
-                        serviceName: '少儿游泳',
-                        count: '2',
-                        total: '600',
-                        createTime: '2016-10-09 12:00:00'
-                    }
-                ]
+                infos: []
             }
         },
         components: {
