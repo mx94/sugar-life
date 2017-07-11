@@ -29,7 +29,7 @@
         right 0
         bottom 0
         width 100vw
-        height 75px
+        height 20vw
         box-sizing border-box
         padding 0 15px
         background-color rgba(0, 0, 0, .6)

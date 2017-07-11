@@ -3,8 +3,8 @@
         <home-header></home-header>
         <div class="main">
             <type-show></type-show>
-            <neighborhood :hasPos="hasPos"></neighborhood>
-            <sale-list :hasPos="hasPos" type="distance" :gps="positions" :page="page" @noData="noData"></sale-list>
+            <neighborhood></neighborhood>
+            <sale-list :hasPos="hasPos" type="distance" :gps="psitions" :page="page" @noData="noData"></sale-list>
             <load-more :hasMore="hasMore" @needData="needData"></load-more>
         </div>
         <d-tooltip></d-tooltip>
@@ -20,15 +20,17 @@
     import {baseURL} from '../../api/config'
     import {mapState, mapActions, mapGetters} from 'vuex';
     import * as types from '../../store/types';
+    import {getCookie} from '../../common/js/utils'
 
     export default {
         computed: {
-            ...mapState(['positions', 'hasPos'])
+            ...mapState(['hasPos']),
+            ...mapGetters(['ctName', 'hasPsition', 'psitions'])
         },
         data () {
             return {
                 hasMore: true,
-                page: 1
+                page: 1,
             }
         },
         components: {

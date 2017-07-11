@@ -9,7 +9,7 @@
             <div class="title">{{info.storeName}}</div>
             <div class="order-con">
                 <div class="img-con">
-                    <img :src="info.logo" />
+                    <img :src="info.logo"/>
                 </div>
                 <div class="info">
                     <div class="serv-name">{{info.serviceName}}</div>
@@ -34,7 +34,7 @@
 
     export default {
         created() {
-            this.$http.get(`${baseURL}/wechat/order?limit=10&page=1&offset=0&orderCreateId=${this.$route.params.id}`).then(res => {
+            this.$http.get(`${baseURL}/wechat/order?limit=10&page=1&offset=0&orderCreateId=${this.userId}`).then(res => {
                 let result = res.body
                 if (result.code == 200) {
                     result.data.items.forEach(item => {
@@ -62,7 +62,8 @@
         },
         data () {
             return {
-                infos: []
+                infos: [],
+                userId: '1'
             }
         },
         components: {
@@ -80,6 +81,7 @@
         height 49px
         background-color $color-theme
         font-size 16px
+
     .order
         width 100%
         padding 15px

@@ -10,7 +10,10 @@ export const mutations = {
     },
 
     [types.CHANGE_CITY](state, city) {
-        state.cityName = city
+        state.otherCityName = city
     },
 
+    [types.IS_OTHER_CITY](state, flag) {
+        state.isOtherCity = flag
+    }
 }

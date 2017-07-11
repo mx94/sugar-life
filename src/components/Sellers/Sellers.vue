@@ -5,7 +5,16 @@
                 <mt-button icon="back"></mt-button>
             </router-link>
         </mt-header>
-        <sale-list :hasPos="hasPos" :serviceTypeId="serviceTypeId" :gps="positions" :type="serviceType" :page="page" @noData="noData"></sale-list>
+        <sale-list
+            :hasPos="hasPsition"
+            :serviceTypeId="serviceTypeId"
+            :gps="positions"
+            :type="serviceType"
+            :allStoreType="allStoreType"
+            :page="page"
+            :otherCityFlag="isOtherCity"
+            @noData="noData"
+        ></sale-list>
         <load-more :hasMore="hasMore" @needData="needData"></load-more>
         <d-tooltip></d-tooltip>
     </div>
@@ -22,11 +31,13 @@
 
     export default {
         computed: {
-            ...mapState(['positions', 'hasPos'])
+            ...mapState(['positions']),
+            ...mapGetters(['hasPsition', 'isOtherCity'])
         },
         created() {
             this.serviceTypeId = this.$route.params.serviceTypeId;
             this.serviceType = 'serviceType';
+            this.allStoreType = null;
         },
         data () {
             return {

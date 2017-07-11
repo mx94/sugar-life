@@ -33,7 +33,7 @@
             </div>
         </div>
         <!--用户评论-->
-        <user-comment></user-comment>
+        <user-comment :storeId="info.id" :page="page"></user-comment>
         <!--后退按钮-->
         <jump-back @jumpBack="jumpBack"></jump-back>
     </div>
@@ -51,6 +51,7 @@
         },
         data () {
             return {
+                page: 0,
                 info: {},
                 zoom: 14,
                 center: [121.5273285, 31.21515044],

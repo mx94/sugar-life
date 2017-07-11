@@ -17,7 +17,7 @@
         </router-link>
 
         <!--查看全部-->
-        <div class="view-more">
+        <div class="view-more" v-show="this.lists.length > 1">
             <span v-if="!isShow" @click="slideDown">查看全部 &nbsp; <i class="mintui mintui-back icon-down"></i></span>
             <span v-if="isShow" @click="slideUp">收起 &nbsp; <i class="mintui mintui-back icon-up"></i></span>
         </div>

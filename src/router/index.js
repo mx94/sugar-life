@@ -8,6 +8,7 @@ import Refund from '@/components/Refund/Refund'
 import Mine from '@/components/Mine/Mine'
 import Register from '@/components/Mine/Register'
 import ChangePassword from '@/components/Mine/ChangePassword'
+import Changename from '@/components/Mine/Changename'
 import Profile from '@/components/Mine/Profile'
 import Detail from '@/components/Detail/Detail'
 import Service from '@/components/Service/Service'
@@ -47,6 +48,10 @@ export default new Router({
         {
             path: '/changepassword',
             component: ChangePassword
+        },
+        {
+            path: '/changename',
+            component: Changename
         },
         {
             path: '/register',

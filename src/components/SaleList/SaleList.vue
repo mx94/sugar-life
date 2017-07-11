@@ -9,8 +9,8 @@
                         <div class="star">
                             <star :count="list.starRating"></star>
                         </div>
-                        <div class="distance" v-show="hasPos && cityName === '上海'">距离:<span>{{ list.distance }}m</span></div>
-                        <!--<div class="distance cityname" v-show="cityName !== '上海' && type === 'serviceType'">{{cityName}}</div>-->
+                        <div class="distance" v-show="hasPos && !otherCityFlag">距离:<span>{{ list.distance }}m</span></div>
+                        <div class="distance cityname" v-show="otherCityFlag">{{otherCityName}}</div>
                     </div>
                 </div>
             </div>
@@ -25,20 +25,24 @@
 
     export default {
         computed: {
-            ...mapGetters(['cityName'])
+            ...mapGetters(['ctName', 'otherCityName'])
         },
         watch: {
             page(newPage, oldPage) {
                 this._getData(newPage)
+            },
+            hasPos(val) {
+                this.flag = val
             }
         },
         created() {
             this._getData(this.page)
         },
-        props: ['hasPos', 'type', 'gps', 'serviceTypeId', 'page'],
+        props: ['hasPos', 'type', 'allStoreType', 'gps', 'serviceTypeId', 'page', 'otherCityFlag'],
         data () {
             return {
-                lists: []
+                lists: [],
+                flag: true
             }
         },
         components: {
@@ -58,10 +62,16 @@
 
                     // 获取指定服务类型并且是附近的商户列表
                     if (this.type === 'serviceType') {
-                        this.updateList(`${baseURL}/wechat/store/findStoreByServiceType?gpsLat=${gpsLat}&gpsLong=${gpsLong}&page=${page}&serviceTypeId=${this.serviceTypeId}`)
+                        if (this.serviceTypeId === '4396') {
+                            if (this.otherCityFlag) {
+                                this.updateList(`${baseURL}/wechat/store?cityName=${this.otherCityName}&limit=10&page=${page}`)
+                            } else {
+                                this.updateList(`${baseURL}/wechat/store?cityName=${this.ctName}&limit=10&page=${page}`)
+                            }
+                        } else {
+                            this.updateList(`${baseURL}/wechat/store/findStoreByServiceType?gpsLat=${gpsLat}&gpsLong=${gpsLong}&page=${page}&serviceTypeId=${this.serviceTypeId}`)
+                        }
                     }
-                } else {
-
                 }
             },
             getList(api, cb) {

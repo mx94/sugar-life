@@ -7,11 +7,18 @@
         </mt-header>
 
         <div class="profile-con">
-            <mt-cell title="头像" is-link>
-                <img class="avatar" src="http://avatar.csdn.net/C/B/D/1_u010014658.jpg">
+            <mt-cell title="头像">
+                <img class="avatar" :src="infos.photo">
             </mt-cell>
-            <mt-cell title="昵称" value="光头强" is-link></mt-cell>
-            <mt-cell title="绑定手机" is-link value="13888899660"></mt-cell>
+            <a class="mint-cell" @click="changeNick"><span class="mint-cell-mask"></span>
+                <div class="mint-cell-left"></div>
+                <div class="mint-cell-wrapper">
+                    <div class="mint-cell-title"><!----> <span class="mint-cell-text">昵称</span> <!----></div>
+                    <div class="mint-cell-value is-link"><span>{{infos.nickname}}</span></div>
+                </div>
+                <div class="mint-cell-right"></div>
+                <i class="mint-cell-allow-right"></i></a>
+            <mt-cell title="绑定手机" :value="infos.cellphone"></mt-cell>
         </div>
         <div class="logout-btn-con">
             <mt-button class="btn" type="primary" @click="logout">退出登录</mt-button>
@@ -23,6 +30,7 @@
     import MtButton from "../../../node_modules/mint-ui/packages/button/src/button";
     import MtCell from "../../../node_modules/mint-ui/packages/cell/src/cell";
     import {getCookie, clearCookie} from '../../common/js/utils'
+    import {baseURL} from '../../api/config'
 
     export default {
         beforeRouteEnter(to, from, next) {
@@ -33,7 +41,18 @@
             }
         },
         data () {
-            return {}
+            return {
+                infos: {}
+            }
+        },
+        created() {
+            this.$http.get(`${baseURL}/app/profile`).then(res => {
+                if (res.body.code == 200) {
+                    console.log(res.body);
+                    let {userId, nickname, cellphone} = res.body.data
+                    this.infos = {userId, nickname, cellphone, photo: 'http://avatar.csdn.net/C/B/D/1_u010014658.jpg'}
+                }
+            })
         },
         components: {
             MtCell,
@@ -41,6 +60,9 @@
             MtButton
         },
         methods: {
+            changeNick() {
+                this.$router.push('/changename')
+            },
             logout() {
                 clearCookie('token')
                 this.$router.push('/')
@@ -55,6 +77,7 @@
         height 49px
         background-color $color-theme
         font-size 16px
+
     .profile-con
         padding 10px 15px
         background-color #fff
@@ -71,6 +94,7 @@
                 border-radius 50%
             .mint-cell-text, .mint-cell-value
                 font-size 14px
+
     .logout-btn-con
         position: fixed
         bottom 0

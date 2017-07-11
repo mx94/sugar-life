@@ -14,7 +14,13 @@
     </div>
 </template>
 <script>
+    import {baseURL} from '../../api/config'
+
     export default {
+        props: ['page'],
+        created() {
+            this.$http.get(`${baseURL}/wechat/comments?limit=10&page=1&offset=0&businessId=${this.page}`)
+        },
         data () {
             return {
                 comments: [

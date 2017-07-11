@@ -1,7 +1,8 @@
 <template>
     <mt-header class="home-header">
         <div class="city" slot="left" @click="selectCity">
-            <span>{{cityName}}</span>&nbsp;
+            <span v-show="isOtherCity">{{otherCityName}}</span>
+            <span v-show="!isOtherCity">{{ctName}}</span>&nbsp;
             <i class="mintui mintui-back icon-down"></i>
         </div>
         <div class="login" slot="right">
@@ -21,59 +22,39 @@
     import MtHeader from "../../../node_modules/mint-ui/packages/header/src/header";
     import {mapState, mapActions, mapGetters} from 'vuex';
     import * as types from '../../store/types';
+    import {getCookie} from '../../common/js/utils'
 
     export default {
         computed: {
-            ...mapState(['positions']),
-            ...mapGetters(['cityName'])
+            ...mapGetters(['ctName', 'isOtherCity', 'otherCityName'])
         },
         created() {
-            this.getPos()
+//            this.$timer = setTimeout(this.getPsition, 50)
+            this.getPsition()
+        },
+        beforeDestroy() {
+            this.$timer = null
         },
         data () {
-            return {}
+            return {
+                $timer: null,
+            }
         },
         components: {MtHeader},
         methods: {
             ...mapActions([
                 types.SET_POSITION,
-                types.HAS_POSITION
+                types.HAS_POSITION,
+                types.CHANGE_CITY
             ]),
-            getPos() {
-                var options = {
-                    enableHighAccuracy: true,
-                    maximumAge: 1000
-                }
-                if (navigator.geolocation) {
-                    //浏览器支持geolocation
-                    navigator.geolocation.getCurrentPosition(this.onSuccess, this.onError, options);
-                } else {
-                    //浏览器不支持geolocation
-                    alert('您的浏览器不支持地理位置定位');
-                }
-            },
-            onSuccess(position) {
-                this[types.SET_POSITION]({
-                    longitude: position.coords.longitude,
-                    latitude: position.coords.latitude
-                });
-                this[types.HAS_POSITION](true);
-            },
-            onError(error) {
-                this[types.HAS_POSITION](false);
-                switch (error.code) {
-                    case 1:
-                        console.log("位置服务被拒绝");
-                        break;
-                    case 2:
-                        console.log("暂时获取不到位置信息");
-                        break;
-                    case 3:
-                        console.log("获取信息超时");
-                        break;
-                    case 4:
-                        console.log("未知错误");
-                        break;
+            getPsition() {
+                if (getCookie('lat') && getCookie('lon')) {
+                    this[types.HAS_POSITION](true);
+                    this[types.SET_POSITION]({
+                        latitude: getCookie('lat'),
+                        longitude: getCookie('lon')
+                    });
+//                    this[types.CHANGE_CITY](localStorage.getItem('city'));
                 }
             },
             selectCity() {

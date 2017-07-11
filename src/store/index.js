@@ -7,8 +7,10 @@ const state = {
         longitude: '121.48',
         latitude: '31.22'
     },
-    hasPos: false,
-    cityName: '上海'
+    hasPos: localStorage.getItem('city') || false,
+    cityName: localStorage.getItem('city') || '上海市',
+    isOtherCity: false,
+    otherCityName: ''
 }
 
 import {actions} from './actions';

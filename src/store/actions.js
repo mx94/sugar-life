@@ -14,5 +14,10 @@ export const actions = {
     // 切换城市
     [types.CHANGE_CITY]({commit}, city) {
         commit(types.CHANGE_CITY, city)
+    },
+
+    // 与当前定位城市是否相同
+    [types.IS_OTHER_CITY]({commit}, flag) {
+        commit(types.IS_OTHER_CITY, flag)
     }
 }

@@ -7,8 +7,14 @@
     </div>
 </template>
 <script>
+    import {getCookie} from '../../common/js/utils'
+    import {mapState, mapActions, mapGetters} from 'vuex';
+    import * as types from '../../store/types';
+
     export default {
-        props: ['hasPos'],
+        computed: {
+            ...mapState(['hasPos'])
+        },
         data () {
             return {
             }

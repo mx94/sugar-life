@@ -6,6 +6,40 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <title>sugar-life</title>
     <link rel="stylesheet" href="http://at.alicdn.com/t/font_mvsk6fvxnm31sjor.css">
+    <script type="text/javascript"
+            src="http://api.map.baidu.com/api?v=2.0&ak=lide0hVBWmq1kBUjsKXn41GeZieMpd3B"></script>
+    <script type="text/javascript" charset="utf-8">
+        window.getCurPos = function () {
+            function setCookie(cname, cvalue, exdays) {
+                var d = new Date();
+                d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+                var expires = "expires=" + d.toUTCString();
+                document.cookie = cname + "=" + cvalue + "; " + expires;
+            }
+
+            var geolocation = new BMap.Geolocation();
+            geolocation.getCurrentPosition(function (r) {
+                console.log(this, geolocation)
+                if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+                    var mk = new BMap.Marker(r.point);
+                    var currentLat = r.point.lat;
+                    var currentLon = r.point.lng;
+                    var pt = new BMap.Point(currentLon, currentLat);
+                    var geoc = new BMap.Geocoder();
+                    geoc.getLocation(pt, function (rs) {
+                        var addComp = rs.addressComponents;
+                        var city = addComp.city;
+                        setCookie('lat', currentLat, 7200);
+                        setCookie('lon', currentLon, 7200);
+                        localStorage.setItem('city', city);
+                        var addComp = rs.addressComponents;
+                        var texts = addComp.district + "-" + addComp.street + "-" + addComp.streetNumber;
+                    });
+                }
+            });
+        }
+        getCurPos();
+    </script>
 </head>
 <body>
 <div id="app"></div>

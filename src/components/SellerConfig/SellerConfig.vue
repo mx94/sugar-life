@@ -8,7 +8,7 @@
                 </div>
                 <div class="text">WIFI</div>
             </div>
-            <div v-show="facilities.indexOf('停车厂') > -1" class="item item-park">
+            <div v-show="facilities.indexOf('停车场') > -1" class="item item-park">
                 <div class="img-con">
                     <div class="img"></div>
                 </div>
