@@ -19,7 +19,14 @@
     export default {
         props: ['page'],
         created() {
-            this.$http.get(`${baseURL}/wechat/comments?limit=10&page=1&offset=0&businessId=${this.page}`)
+            this.$http.get(`${baseURL}/wechat/comments?limit=10&page=1&offset=0&businessId=${this.page}`).then(res => {
+                if (res.body.code == 200) {
+                    res.body.data.forEach(item => {
+                        let {userId, nickName, comments, servicename, userPhoto} = item;
+                        this.comments.push({userId, nickName, comments, servicename, userPhoto})
+                    })
+                }
+            })
         },
         data () {
             return {

@@ -13,7 +13,9 @@
             <router-link :to="`/detail/${this.$route.params.id}/service`" replace>服务</router-link>
             <router-link :to="`/detail/${this.$route.params.id}/baby`" replace>育婴师</router-link>
         </div>
-        <router-view></router-view>
+        <keep-alive>
+            <router-view></router-view>
+        </keep-alive>
         <!--门店设施-->
         <seller-config :facilities="facilities"></seller-config>
         <!--地理位置-->

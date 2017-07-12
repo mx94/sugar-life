@@ -9,17 +9,17 @@
         <div class="order-detail-con">
             <div class="con">
                 <div class="serv-name">
-                    <img src="http://avatar.csdn.net/C/B/D/1_u010014658.jpg">
+                    <img :src="info.photo">
                     <div class="title-info">
-                        <span>婴儿生活馆（浦东南路店）</span>
-                        <span>婴儿游泳</span>
+                        <span v-html="info.storeName"></span>
+                        <span>{{info.serviceName}}</span>
                     </div>
                 </div>
                 <div class="order-item" style="border-top: 1px solid #f0f0f0; margin-top: 10px">
                     <div class="label">退款数量：</div>
                     <div class="value" style="flex: 1">
                         <mt-button type="default" size="small" @click="mini">-</mt-button>
-                        <input v-model="info.count" type="number" class="mint-field-core count" readonly>
+                        <input v-model="count" type="number" class="mint-field-core count" readonly>
                         <mt-button type="default" size="small" @click="sum">+</mt-button>
                     </div>
                 </div>
@@ -42,19 +42,34 @@
     import MtButton from "../../../node_modules/mint-ui/packages/button/src/button";
     import MtHeader from "../../../node_modules/mint-ui/packages/header/src/header";
     import MessageBox from "mint-ui/packages/message-box"
+    import {baseURL} from '../../api/config'
 
     export default {
+        created() {
+            this.$http.get(`${baseURL}/wechat/order/${this.$route.params.id}`).then(res => {
+                if (res.body.code == 200) {
+                    let {serviceImageList, storeName, serviceName, unitPrice, buyNumber} = res.body.data;
+                    this.info = {
+                        serviceImageList,
+                        storeName,
+                        serviceName,
+                        buyNumber,
+                        unitPrice,
+                        photo: serviceImageList['0']['imagePath']
+                    }
+                }
+            }).catch()
+        },
         computed: {
             total() {
-                return parseFloat(this.info.count) * parseFloat(this.info.unitPrice)
+                return parseFloat(this.count) * parseFloat(this.info.unitPrice)
             }
         },
         data () {
             return {
                 info: {
-                    count: '1',
-                    unitPrice: 200
-                }
+                },
+                count: 1
             }
         },
         components: {
@@ -63,11 +78,12 @@
         },
         methods: {
             mini() {
-                if (this.info.count <= 1) return
-                this.info.count--
+                if (this.count <= 1) return
+                this.count--
             },
             sum() {
-                this.info.count++
+                if (this.count >= this.info.buyNumber) return;
+                this.count++
             },
             confirmIt() {
                 MessageBox.confirm('请下载APP，进行退款操作').then(action => {

@@ -1,7 +1,7 @@
 <template>
     <div style="height: 100%">
         <mt-header title="我的订单" class="m-header">
-            <span @click="$router.go(-1)" slot="left">
+            <span @click="$router.push('/')" slot="left">
                 <mt-button icon="back" name="back"></mt-button>
             </span>
         </mt-header>
@@ -19,6 +19,7 @@
                         <div class="create-time">{{info.orderCreateTime}}</div>
                     </div>
                 </div>
+                <mt-button v-show="info.orderStatus === 'WAITING_FOR_PAY'" type="primary" size="small" class="pay-btn" :plain="true" @click.stop="jumpToPay(info.storeId)">付款</mt-button>
             </div>
         </router-link>
 
@@ -31,39 +32,61 @@
     import DTooltip from '../../components/DTooltip/DTooltip.vue'
     import {baseURL} from '../../api/config'
     import {formatDate} from '../../common/js/utils'
+    import {getCookie} from '../../common/js/utils'
 
     export default {
-        created() {
-            this.$http.get(`${baseURL}/wechat/order?limit=10&page=1&offset=0&orderCreateId=${this.userId}`).then(res => {
-                let result = res.body
-                if (result.code == 200) {
-                    result.data.items.forEach(item => {
-                        let {
-                            id,
-                            storeName,
-                            serviceName,
-                            buyNumber,
-                            totalPrice,
-                            orderCreateTime,
-                            serviceImageList
-                        } = item
-                        this.infos.push({
-                            id,
-                            storeName,
-                            serviceName,
-                            buyNumber,
-                            totalPrice,
-                            orderCreateTime: formatDate(new Date(orderCreateTime)),
-                            logo: 'http://avatar.csdn.net/C/B/D/1_u010014658.jpg'
-                        })
+        beforeRouteEnter(to, from, next) {
+            if (getCookie('token')) {
+                next(vm => {
+                    vm.$http.get(`${baseURL}/app/profile`).then(res => {
+                        if (res.body.code == 200) {
+                            vm.userId = res.body.data.userId
+                        }
                     })
+                })
+            } else {
+                next({path: '/mine'})
+            }
+        },
+        watch: {
+            userId(val, old) {
+                if (val) {
+                    this.$http.get(`${baseURL}/wechat/order?limit=10&page=1&offset=0&orderCreateId=${val}`).then(res => {
+                        let result = res.body
+                        if (result.code == 200) {
+                            result.data.items.forEach(item => {
+                                let {
+                                    id,
+                                    storeId,
+                                    storeName,
+                                    serviceName,
+                                    buyNumber,
+                                    totalPrice,
+                                    orderCreateTime,
+                                    orderStatus,
+                                    serviceImageList
+                                } = item
+                                this.infos.push({
+                                    id,
+                                    storeId,
+                                    storeName,
+                                    serviceName,
+                                    buyNumber,
+                                    totalPrice,
+                                    orderStatus,
+                                    orderCreateTime: formatDate(new Date(orderCreateTime)),
+                                    logo: serviceImageList[0]['imagePath']
+                                })
+                            })
+                        }
+                    }).catch()
                 }
-            }).catch()
+            }
         },
         data () {
             return {
                 infos: [],
-                userId: '1'
+                userId: null
             }
         },
         components: {
@@ -71,7 +94,11 @@
             MtButton,
             DTooltip
         },
-        methods: {}
+        methods: {
+            jumpToPay(id) {
+                this.$router.push(`/pay/${id}`)
+            }
+        }
     }
 </script>
 <style scoped lang="stylus" rel="stylesheet/stylus">
@@ -96,6 +123,15 @@
         .order-con
             display flex
             align-items center
+            position relative
+            .pay-btn
+                position absolute
+                top 0
+                right 0
+                width 75px
+                height 30px
+                border-radius 100px
+                border-color #6389cd
             .img-con
                 width 75px
                 height 75px

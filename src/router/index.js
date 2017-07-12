@@ -30,7 +30,7 @@ export default new Router({
             component: Main
         },
         {
-            path: '/indent/:id',
+            path: '/indent',
             component: Indent
         },
         {
@@ -89,7 +89,7 @@ export default new Router({
             component: Pay
         },
         {
-            path: '/paysuccess',
+            path: '/paysuccess/:storeId',
             component: PaySuccess
         },
         {

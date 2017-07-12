@@ -23,6 +23,9 @@
     import {getCookie} from '../../common/js/utils'
 
     export default {
+        created() {
+            alert(location.search)
+        },
         computed: {
             ...mapState(['hasPos']),
             ...mapGetters(['ctName', 'hasPsition', 'psitions'])

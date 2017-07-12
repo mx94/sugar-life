@@ -9,63 +9,64 @@
         <div class="order-detail-con">
             <div class="con">
                 <div class="serv-name">
-                    <img src="http://avatar.csdn.net/C/B/D/1_u010014658.jpg">
-                    <span>婴儿游泳</span>
+                    <img :src="infos.photo">
+                    <span>{{infos.serviceName}}</span>
                 </div>
                 <div class="order-item" style="border-top: 1px solid #f0f0f0">
                     <div>订单信息</div>
                 </div>
                 <div class="order-item">
                     <div class="label">订单号：</div>
-                    <div class="value">222332121221</div>
+                    <div class="value">{{infos.id}}</div>
                 </div>
                 <div class="order-item">
                     <div class="label">门店：</div>
-                    <div class="value">母婴店（浦东南路店）</div>
+                    <div class="value">{{infos.storeName}}</div>
                 </div>
                 <div class="order-item">
                     <div class="label">服务：</div>
-                    <div class="value">婴儿洗澡</div>
+                    <div class="value">{{infos.serviceName}}</div>
                 </div>
                 <div class="order-item">
                     <div class="label">育婴师：</div>
-                    <div class="value">向阳</div>
+                    <div class="value">{{infos.nurseryTeacherName}}</div>
                 </div>
                 <div class="order-item">
                     <div class="label">数量：</div>
-                    <div class="value">2</div>
+                    <div class="value">{{infos.buyNumber}}</div>
                 </div>
                 <div class="order-item">
                     <div class="label">总价：</div>
-                    <div class="value">200</div>
+                    <div class="value">{{infos.totalPrice}}</div>
                 </div>
                 <div class="order-item">
                     <div>兑换券</div>
                 </div>
-                <div class="order-item">
-                    <div class="label" style="flex: 3">券1：<span class="quan">22222222223</span></div>
-                    <div class="value">已消费</div>
+
+                <div class="order-item" v-for="(quan, idx) in infos.voucherList" :key="idx">
+                    <div class="label" style="flex: 3">券{{idx + 1}}：<span class="quan">{{quan.id}}</span></div>
+                    <div class="value">{{infos.orderStatusText}}</div>
                 </div>
-                <div class="order-item">
-                    <div class="label" style="flex: 3">券2：<span class="quan">22222222223</span></div>
-                    <div class="value">已消费</div>
-                </div>
+
                 <div class="order-item">
                     <div>支付</div>
                 </div>
                 <div class="order-item">
                     <div class="label">支付方式：</div>
-                    <div class="value">支付宝</div>
+                    <div class="value" v-if="infos.payType === 'BABY_GOLD'">宝币</div>
+                    <div class="value" v-if="infos.payType === 'ALIPAY'">支付宝</div>
+                    <div class="value" v-if="infos.payType === 'WECHAT'">微信</div>
+                    <div class="value" v-if="infos.payType === 'unknow'">取消付款</div>
                 </div>
                 <div class="order-item">
                     <div class="label">下单时间：</div>
                     <div class="value">2016-10-09 12:00:00</div>
                 </div>
-                <div class="order-item">
+                <div class="order-item" v-if="this.refundFlag">
                     <mt-button
                         class="back-btn"
                         type="primary"
-                        @click="$router.push(`/refund/1`)"
+                        @click="$router.push(`/refund/${infos.id}`)"
                     >退款</mt-button>
                 </div>
             </div>
@@ -79,26 +80,58 @@
     import {formatDate} from '../../common/js/utils'
 
     export default {
-        created() {
-            this.$http.get(`${baseURL}/wechat/order/${this.$route.params.id}`).then(res => {
-                let result = res.body
-                if (result.code == 200) {
-                    console.log(result);
-                } else {
-                    console.log(result)
-                }
-            }).catch()
+        mounted() {
+            this._getData()
         },
         data () {
             return {
-                info: {
-                }
+                infos: {
+                },
+                refundFlag: false
             }
         },
         components: {
             MtHeader,
             MtButton},
-        methods: {}
+        methods: {
+            _getData() {
+                this.$http.get(`${baseURL}/wechat/order/${this.$route.params.id}`).then(res => {
+                    let result = res.body
+                    if (result.code == 200) {
+                        let {
+                            serviceImageList,
+                            serviceName,
+                            id,
+                            storeName,
+                            nurseryTeacherName,
+                            buyNumber,
+                            totalPrice,
+                            payType,
+                            createTime,
+                            voucherList,
+                            orderStatusText
+                        } = result.data;
+                        this.refundFlag = voucherList.find(item => item.voucherUseStatus === 'UN_SPEND');
+                        this.infos = {
+                            serviceImageList,
+                            serviceName,
+                            id,
+                            storeName,
+                            nurseryTeacherName,
+                            buyNumber,
+                            totalPrice,
+                            payType,
+                            createTime: formatDate(new Date(createTime)),
+                            voucherList,
+                            orderStatusText,
+                            photo: serviceImageList[0]['imagePath']
+                        }
+                    } else {
+                        console.log(result)
+                    }
+                }).catch()
+            }
+        }
     }
 </script>
 <style scoped lang="stylus" rel="stylesheet/stylus">

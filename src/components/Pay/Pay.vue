@@ -16,15 +16,15 @@
                     <div class="mint-cell-title"><span class="mint-cell-text">数量：</span></div>
                     <div class="mint-cell-value">
                         <mt-button type="default" size="small" @click="mini">-</mt-button>
-                        <input placeholder="请输入数字" number="true" type="number" class="mint-field-core count" v-model="info.count">
+                        <input placeholder="请输入数字" number="true" type="number" class="mint-field-core count" v-model="other.count">
                         <mt-button type="default" size="small" @click="sum">+</mt-button>
                     </div>
                 </div>
             </a>
 
             <mt-field label="服务单价：" :readonly="true" v-model="info.unitPrice"></mt-field>
-            <mt-field label="绑定手机号：" :readonly="true" v-model="info.phoneNumber"></mt-field>
-            <mt-field label="订单时间：" :readonly="true" v-model="info.orderTime"></mt-field>
+            <mt-field label="绑定手机号：" :readonly="true" v-model="other.phoneNumber"></mt-field>
+            <mt-field label="订单时间：" :readonly="true" v-model="other.orderTime"></mt-field>
 
             <a class="mint-cell mint-field" style="padding-bottom: 50px; background-image: none; border-bottom: 1px dotted #ffeb93">
                 <div class="mint-cell-wrapper" style="position: relative; background-image: none">
@@ -32,7 +32,7 @@
                     <div class="mint-cell-value">
                         <mt-radio
                             align="right"
-                            v-model="info.wechat"
+                            v-model="other.wechat"
                             :options="['']">
                         </mt-radio>
                     </div>
@@ -52,6 +52,7 @@
     import MtField from "../../../node_modules/mint-ui/packages/field/src/field";
     import MtRadio from "../../../node_modules/mint-ui/packages/radio/src/radio";
     import {baseURL} from '../../api/config'
+    import {formatDate} from '../../common/js/utils'
 
     export default {
         created() {
@@ -60,31 +61,40 @@
                 if (result.code == 200) {
                     let {
                         id,
+                        storeId,
                         storeName,
                         unitPrice,
-                        serviceName,
+                        serviceName
                     } = result.data;
                     this.info = {
                         id,
+                        storeId,
                         storeName,
                         unitPrice,
-                        serviceName,
-                        count: 1,
-                        phoneNumber: '13774135698',
-                        orderTime: '2017-07-04 16:00',
-                        wechat: ''
-                    }
+                        serviceName
+                    };
+                    this.$http.get(`${baseURL}/app/profile`).then(res => {
+                        if (res.body.code == 200) {
+                            this.other = {
+                                orderTime: formatDate(new Date()),
+                                count: 1,
+                                wechat: '',
+                                phoneNumber: res.body.data.cellphone
+                            }
+                        }
+                    })
                 }
-            }).catch()
+            }).catch();
         },
         computed: {
             total() {
-                return this.info.count * parseFloat(this.info.unitPrice)
+                return this.other.count * parseFloat(this.info.unitPrice)
             }
         },
         data () {
             return {
-                info: {}
+                info: {},
+                other: {}
             }
         },
         components: {
@@ -95,14 +105,14 @@
         },
         methods: {
             payIt() {
-                this.$router.replace('/paysuccess')
+                this.$router.replace('/paysuccess/' + this.info.storeId)
             },
             mini() {
-                if (this.info.count <= 0) return
-                this.info.count--
+                if (this.other.count <= 0) return
+                this.other.count--
             },
             sum() {
-                this.info.count++
+                this.other.count++
             }
         }
     }

@@ -36,8 +36,8 @@
     import {getCookie, setCookie} from '../../common/js/utils'
 
     export default {
-        created() {
-
+        beforeDestroy() {
+            this.timer = null
         },
         data () {
             return {
@@ -48,7 +48,7 @@
                 },
                 showTimeout: false,
                 second: 60,
-                timer: ''
+                timer: null
             }
         },
         components: {
@@ -72,6 +72,7 @@
                 this.showTimeout = !this.showTimeout;
                 this.calcSec();
                 this.$refs.validCode.focus();
+                this.$http.post(`${baseURL}/phoneCode/single`, {cellphone: this.info.cellphone})
             },
             calcSec() {
                 this.timer = setTimeout(() => {

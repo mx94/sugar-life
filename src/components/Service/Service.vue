@@ -40,7 +40,7 @@
         components: {MtButton},
         methods: {
             gotoPay(id) {
-                this.$router.push(`/pay/${id}`)
+                this.$router.replace(`/pay/${id}`)
             },
             slideDown() {
                 this.isShow = !this.isShow
@@ -52,7 +52,7 @@
             },
             getServiceList(flag = 'all') {
                 let storeId = this.$route.params.id;
-                this.$http.get(`${baseURL}/wechat/storeService?limit=10&page=1&offset=0&storeId=${storeId}`).then(res => {
+                this.$http.get(`${baseURL}/wechat/storeService?page=1&offset=0&storeId=${storeId}`).then(res => {
                     let result = res.body;
                     if (result.code == 200) {
                         let arr = []
@@ -144,6 +144,8 @@
                     font-size 12px
                     padding 0 4px
                     width 98%
+                    border-color #6389cd
+                    color #6389cd
         .view-more
             text-align center
             height 32px

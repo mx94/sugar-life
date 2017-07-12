@@ -29,6 +29,7 @@
     import MtHeader from "../../../node_modules/mint-ui/packages/header/src/header";
     import MtButton from "../../../node_modules/mint-ui/packages/button/src/button";
     import MtCell from "../../../node_modules/mint-ui/packages/cell/src/cell";
+    import Toast from 'mint-ui/packages/toast'
     import {getCookie, clearCookie} from '../../common/js/utils'
     import {baseURL} from '../../api/config'
 
@@ -64,8 +65,18 @@
                 this.$router.push('/changename')
             },
             logout() {
-                clearCookie('token')
-                this.$router.push('/')
+                this.$http.get(`${baseURL}/app/auth/logout`).then(res => {
+                    if (res.body.code == 200) {
+                        clearCookie('token');
+                        Toast({
+                            message: '退出成功',
+                            position: 'bottom',
+                            duration: 2000,
+                            className: 'toast-class'
+                        })
+                        this.$router.push('/')
+                    }
+                })
             }
         }
     }

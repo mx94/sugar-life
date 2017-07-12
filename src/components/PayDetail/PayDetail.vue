@@ -93,7 +93,7 @@
     .serv-con
         padding 0 15px
         background-color #fff
-        height calc(100% - 285px)
+        min-height calc(100% - 285px)
         .title
             width 100%
             height 48px
@@ -113,5 +113,5 @@
             font-size 14px
             color #666
             line-height 1.4
-            padding 15px 0
+            padding 15px 0 70px
 </style>
