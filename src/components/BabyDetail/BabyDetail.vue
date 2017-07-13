@@ -38,17 +38,18 @@
                     let {name, photos, profile, workDays, imageList} = res.body.data;
                     // TODO: imageList
                     this.infos = {
-                        name, photos, profile, imageList,
+                        name, photos, profile,
                         workDay: workDays.split('，')
                     };
+                    this.imageList = imageList
                 }
             })
         },
         data () {
             return {
                 infos: {
-                    imageList: []
-                }
+                },
+                imageList: []
             }
         },
         components: {

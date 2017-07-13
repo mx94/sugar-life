@@ -48,6 +48,11 @@
     import {baseURL} from '../../api/config'
 
     export default {
+        watch: {
+            center(newVal) {
+                return newVal
+            }
+        },
         created() {
             this._getRecommend()
         },
@@ -56,9 +61,25 @@
                 page: 0,
                 info: {},
                 zoom: 14,
-                center: [],
-                markers: [],
-                facilities: ''
+                facilities: '',
+                zoom: 14,
+                center: [121.5273285, 31.21515044],
+                markers: [
+                    {
+                        position: [121.5273285, 31.21515044],
+                        events: {
+                            click: (e) => {
+                                console.log(e);
+                            },
+                            dragend: (e) => {
+                                this.markers[0].position = [e.lnglat.lng, e.lnglat.lat];
+                            }
+                        },
+                        visible: true,
+                        draggable: false,
+                        animation: 'AMAP_ANIMATION_NONE'
+                    }
+                ]
             }
         },
         components: {
@@ -100,18 +121,18 @@
                             storeName,
                             telephone
                         }
-                        this.center = [gpsLat, gpsLong]
-                        this.markers.push({
-                            position: [gpsLat, gpsLong],
-                            events: {
-                                click: (e) => {
-                                    console.log(e);
-                                }
-                            },
-                            visible: true,
-                            draggable: false,
-                            animation: 'AMAP_ANIMATION_NONE'
-                        })
+//                        this.center = [gpsLat, gpsLong]
+//                        this.markers.push({
+//                            position: [gpsLat, gpsLong],
+//                            events: {
+//                                click: (e) => {
+//                                    console.log(e);
+//                                }
+//                            },
+//                            visible: true,
+//                            draggable: false,
+//                            animation: 'AMAP_ANIMATION_NONE'
+//                        })
                         this.facilities = facilities
                     }
                 })
