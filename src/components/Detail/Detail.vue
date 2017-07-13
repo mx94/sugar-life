@@ -21,9 +21,9 @@
         <!--地理位置-->
         <div class="map">
             <div class="title">地理位置</div>
-            <div class="map-img">
-                <el-amap vid="amap" :zoom="mapInfo.zoom" :center="mapInfo.center">
-                    <el-amap-marker :key="idx" v-for="(marker, idx) in mapInfo.markers" :animation="marker.animation" :position="marker.position"
+            <div class="map-img" v-show="this.myMapInfo">
+                <el-amap vid="amap" :zoom="myMapInfo.zoom" :center="myMapInfo.center">
+                    <el-amap-marker :key="idx" v-for="(marker, idx) in myMapInfo.markers" :animation="marker.animation" :position="marker.position"
                                     :events="marker.events" :visible="marker.visible"
                                     :draggable="marker.draggable"></el-amap-marker>
                 </el-amap>
@@ -49,9 +49,10 @@
 
     export default {
         watch: {
-//            myMapInfo(newVal) {
-//                return newVal
-//            }
+            mapInfo(newVal) {
+                console.log(newVal)
+                this.myMapInfo = newVal
+            }
         },
         created() {
             this._getRecommend()
@@ -61,7 +62,8 @@
                 page: 0,
                 info: {},
                 facilities: '',
-                mapInfo: {}
+                mapInfo: {},
+                myMapInfo: null
             }
         },
         components: {

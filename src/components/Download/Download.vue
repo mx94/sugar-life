@@ -7,7 +7,7 @@
         </mt-header>
         <div class="image"></div>
         <div class="btn-con">
-            <mt-button type="primary" class="download">下载客户端</mt-button>
+            <mt-button type="primary" class="download" @click="downApp">下载客户端</mt-button>
             <mt-button type="primary" :plain="true" class="back-web" @click="$router.go(-1)">使用网页版继续访问</mt-button>
         </div>
     </div>
@@ -17,13 +17,19 @@
     import MtButton from "../../../node_modules/mint-ui/packages/button/src/button";
     export default {
         data () {
-            return {}
+            return {
+                url: 'http://a.app.qq.com/o/simple.jsp?pkgname=com.kuaicto.lebao'
+            }
         },
         components: {
             MtButton,
             MtHeader
         },
-        methods: {}
+        methods: {
+            downApp() {
+                window.location.href = this.url
+            }
+        }
     }
 </script>
 <style scoped lang="stylus" rel="stylesheet/stylus">
