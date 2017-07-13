@@ -21,9 +21,9 @@
         <!--地理位置-->
         <div class="map">
             <div class="title">地理位置</div>
-            <div class="map-img" v-show="this.center.length">
-                <el-amap vid="amap" :zoom="zoom" :center="center">
-                    <el-amap-marker :key="idx" v-for="(marker, idx) in markers" :animation="marker.animation" :position="marker.position"
+            <div class="map-img">
+                <el-amap vid="amap" :zoom="mapInfo.zoom" :center="mapInfo.center">
+                    <el-amap-marker :key="idx" v-for="(marker, idx) in mapInfo.markers" :animation="marker.animation" :position="marker.position"
                                     :events="marker.events" :visible="marker.visible"
                                     :draggable="marker.draggable"></el-amap-marker>
                 </el-amap>
@@ -49,9 +49,9 @@
 
     export default {
         watch: {
-            center(newVal) {
-                return newVal
-            }
+//            myMapInfo(newVal) {
+//                return newVal
+//            }
         },
         created() {
             this._getRecommend()
@@ -60,26 +60,8 @@
             return {
                 page: 0,
                 info: {},
-                zoom: 14,
                 facilities: '',
-                zoom: 14,
-                center: [121.5273285, 31.21515044],
-                markers: [
-                    {
-                        position: [121.5273285, 31.21515044],
-                        events: {
-                            click: (e) => {
-                                console.log(e);
-                            },
-                            dragend: (e) => {
-                                this.markers[0].position = [e.lnglat.lng, e.lnglat.lat];
-                            }
-                        },
-                        visible: true,
-                        draggable: false,
-                        animation: 'AMAP_ANIMATION_NONE'
-                    }
-                ]
+                mapInfo: {}
             }
         },
         components: {
@@ -120,20 +102,25 @@
                             storeAddress,
                             storeName,
                             telephone
-                        }
-//                        this.center = [gpsLat, gpsLong]
-//                        this.markers.push({
-//                            position: [gpsLat, gpsLong],
-//                            events: {
-//                                click: (e) => {
-//                                    console.log(e);
-//                                }
-//                            },
-//                            visible: true,
-//                            draggable: false,
-//                            animation: 'AMAP_ANIMATION_NONE'
-//                        })
-                        this.facilities = facilities
+                        };
+                        this.mapInfo = {
+                            zoom: 14,
+                            center: [gpsLong, gpsLat],
+                            markers: [
+                                {
+                                    position: [gpsLong, gpsLat],
+                                    events: {
+                                        click: (e) => {
+                                            console.log(e);
+                                        },
+                                    },
+                                    visible: true,
+                                    draggable: false,
+                                    animation: 'AMAP_ANIMATION_NONE'
+                                }
+                            ]
+                        };
+                        this.facilities = facilities;
                     }
                 })
             }

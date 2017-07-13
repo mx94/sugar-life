@@ -42,7 +42,7 @@
         methods: {
             gotoPay(id) {
                 if (getCookie('token')) {
-                    this.$router.replace(`/pay/${id}`)
+                    this.$router.push(`/pay/${id}`)
                 } else {
                     this.$router.push('/mine')
                 }

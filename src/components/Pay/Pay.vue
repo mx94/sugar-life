@@ -52,9 +52,16 @@
     import MtField from "../../../node_modules/mint-ui/packages/field/src/field";
     import MtRadio from "../../../node_modules/mint-ui/packages/radio/src/radio";
     import {baseURL} from '../../api/config'
-    import {formatDate} from '../../common/js/utils'
+    import {formatDate, getCookie} from '../../common/js/utils'
 
     export default {
+        beforeRouteEnter(to, from, next) {
+            if (getCookie('token')) {
+                next()
+            } else {
+                next('/mine')
+            }
+        },
         created() {
             this.$http.get(`${baseURL}/wechat/storeService/${this.$route.params.id}`).then(res => {
                 let result = res.body;
