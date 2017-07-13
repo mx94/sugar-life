@@ -59,19 +59,22 @@
             this.$http.get(`${baseURL}/wechat/storeService/${this.$route.params.id}`).then(res => {
                 let result = res.body;
                 if (result.code == 200) {
+                    console.log(result.data);
                     let {
                         id,
                         storeId,
                         storeName,
                         unitPrice,
-                        serviceName
+                        serviceName,
+                        memberPrice
                     } = result.data;
                     this.info = {
                         id,
                         storeId,
                         storeName,
                         unitPrice,
-                        serviceName
+                        serviceName,
+                        memberPrice
                     };
                     this.$http.get(`${baseURL}/app/profile`).then(res => {
                         if (res.body.code == 200) {
@@ -88,7 +91,10 @@
         },
         computed: {
             total() {
-                return this.other.count * parseFloat(this.info.unitPrice)
+                return (Math.floor(parseFloat(this.info.unitPrice) * this.other.count * 100) / 100).toFixed(2)
+            },
+            memberTotal() {
+                return (Math.floor(parseFloat(this.info.memberPrice) * this.other.count * 100) / 100).toFixed(2)
             }
         },
         data () {
@@ -105,10 +111,40 @@
         },
         methods: {
             payIt() {
-                this.$router.replace('/paysuccess/' + this.info.storeId)
+                this.$http.post(`${baseURL}/wechat/order`, {
+                    storeId: this.info.storeId,
+                    serviceId: this.info.id,
+                    serviceName: this.info.serviceName,
+                    buyNumber: this.other.count,
+                    unitPrice: this.info.unitPrice,
+                    memberPrice: this.info.memberPrice,
+                    totalPrice: this.total,
+                    cellphone: this.other.phoneNumber,
+                    memberTotalPrice: this.memberTotal,
+                    buyType: 'SERVICE'
+                }).then(res => {
+                    if (res.body.code == 200) {
+                        let order_no = res.body.data.id;
+                        this.$http.post(`${baseURL}/app/pay`, {
+                            order_no: `FW${order_no}`,
+                            channel: 'wx_pub',
+                            amount: this.total
+                        }).then(res => {
+                            // 唤起微信支付
+                            let flag = confirm('支付成功？')
+                            if (flag) {
+                                this.$router.replace('/paysuccess/' + this.info.storeId)
+                            } else {
+                                this.$router.replace('/payfail/' + this.info.storeId)
+                            }
+                        }).catch(e => console.log(e))
+                    }
+                }).catch(e => console.log(e))
+
+
             },
             mini() {
-                if (this.other.count <= 0) return
+                if (this.other.count <= 1) return
                 this.other.count--
             },
             sum() {

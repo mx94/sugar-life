@@ -17,7 +17,7 @@
                 </div>
                 <div class="btn-con">
                     <div class="btn-item">
-                        <mt-button type="primary" class="look" @click="$router.go(-1)">重新支付</mt-button>
+                        <mt-button type="primary" class="look" @click="$router.push(`/detail/${$route.params.id}/service`)">重新支付</mt-button>
                     </div>
                 </div>
             </div>

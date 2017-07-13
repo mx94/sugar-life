@@ -93,7 +93,7 @@ export default new Router({
             component: PaySuccess
         },
         {
-            path: '/payfail',
+            path: '/payfail/:id',
             component: PayFail
         },
         {

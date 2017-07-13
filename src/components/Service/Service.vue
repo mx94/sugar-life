@@ -26,6 +26,7 @@
 <script>
     import MtButton from "../../../node_modules/mint-ui/packages/button/src/button";
     import {baseURL} from '../../api/config'
+    import {getCookie} from '../../common/js/utils'
 
     export default {
         created() {
@@ -40,7 +41,11 @@
         components: {MtButton},
         methods: {
             gotoPay(id) {
-                this.$router.replace(`/pay/${id}`)
+                if (getCookie('token')) {
+                    this.$router.replace(`/pay/${id}`)
+                } else {
+                    this.$router.push('/mine')
+                }
             },
             slideDown() {
                 this.isShow = !this.isShow

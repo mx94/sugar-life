@@ -21,7 +21,7 @@
         <!--地理位置-->
         <div class="map">
             <div class="title">地理位置</div>
-            <div class="map-img">
+            <div class="map-img" v-show="this.center.length">
                 <el-amap vid="amap" :zoom="zoom" :center="center">
                     <el-amap-marker :key="idx" v-for="(marker, idx) in markers" :animation="marker.animation" :position="marker.position"
                                     :events="marker.events" :visible="marker.visible"
@@ -56,20 +56,8 @@
                 page: 0,
                 info: {},
                 zoom: 14,
-                center: [121.5273285, 31.21515044],
-                markers: [
-                    {
-                        position: [121.5273285, 31.21515044],
-                        events: {
-                            click: (e) => {
-                                console.log(e);
-                            }
-                        },
-                        visible: true,
-                        draggable: false,
-                        animation: 'AMAP_ANIMATION_NONE'
-                    }
-                ],
+                center: [],
+                markers: [],
                 facilities: ''
             }
         },
@@ -113,7 +101,17 @@
                             telephone
                         }
                         this.center = [gpsLat, gpsLong]
-                        this.markers[0].position = [gpsLat, gpsLong]
+                        this.markers.push({
+                            position: [gpsLat, gpsLong],
+                            events: {
+                                click: (e) => {
+                                    console.log(e);
+                                }
+                            },
+                            visible: true,
+                            draggable: false,
+                            animation: 'AMAP_ANIMATION_NONE'
+                        })
                         this.facilities = facilities
                     }
                 })

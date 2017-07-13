@@ -24,7 +24,6 @@
 
     export default {
         created() {
-            alert(location.search)
         },
         computed: {
             ...mapState(['hasPos']),

@@ -2,12 +2,12 @@
     <div class="comment">
         <div class="title">用户评论</div>
         <div class="comment-con">
-            <div class="list-item" v-for="comment in comments" :key="comment.id">
-                <img :src="comment.src">
-                <span class="username">{{ comment.username }}</span>
+            <div class="list-item" v-for="comment in commentss" :key="comment.userId">
+                <img :src="comment.userPhoto">
+                <span class="username">{{ comment.nickName }}</span>
                 <div class="content">
-                    <p>{{ comment.content }}</p>
-                    <p>所选服务 <span>{{ comment.service }}</span></p>
+                    <p>{{ comment.comments }}</p>
+                    <p>所选服务 <span>{{ comment.servicename }}</span></p>
                 </div>
             </div>
         </div>
@@ -23,29 +23,14 @@
                 if (res.body.code == 200) {
                     res.body.data.forEach(item => {
                         let {userId, nickName, comments, servicename, userPhoto} = item;
-                        this.comments.push({userId, nickName, comments, servicename, userPhoto})
+                        this.commentss.push({userId, nickName, comments, servicename, userPhoto});
                     })
                 }
             })
         },
         data () {
             return {
-                comments: [
-                    {
-                        id: 0,
-                        src: 'http://avatar.csdn.net/C/B/D/1_u010014658.jpg',
-                        username: '小宝妈妈',
-                        content: '这里环境真的不错，1号育婴师很nice,1号育婴师很nice1号育婴师很nice1号育婴师很nice1号育婴师很nice1号育婴师很nice1号育婴师很nice',
-                        service: '游泳'
-                    },
-                    {
-                        id: 2,
-                        src: 'http://avatar.csdn.net/C/B/D/1_u010014658.jpg',
-                        username: '小宝爸爸',
-                        content: '这里环境真的不错，1号育婴师很nice,1号育婴师很nice1号育婴师很nice1号育婴师很nice1号育婴师很nice1号育婴师很nice1号育婴师很nice',
-                        service: '跑步'
-                    }
-                ]
+                commentss: []
             }
         },
         components: {},

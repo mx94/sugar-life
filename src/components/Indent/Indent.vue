@@ -19,7 +19,7 @@
                         <div class="create-time">{{info.orderCreateTime}}</div>
                     </div>
                 </div>
-                <mt-button v-show="info.orderStatus === 'WAITING_FOR_PAY'" type="primary" size="small" class="pay-btn" :plain="true" @click.stop="jumpToPay(info.storeId)">付款</mt-button>
+                <mt-button v-show="info.orderStatus === 'WAITING_FOR_PAY'" type="primary" size="small" class="pay-btn" :plain="true" @click.stop="jumpToPay(info.serviceId)">付款</mt-button>
             </div>
         </router-link>
 
@@ -59,6 +59,7 @@
                                     id,
                                     storeId,
                                     storeName,
+                                    serviceId,
                                     serviceName,
                                     buyNumber,
                                     totalPrice,
@@ -70,6 +71,7 @@
                                     id,
                                     storeId,
                                     storeName,
+                                    serviceId,
                                     serviceName,
                                     buyNumber,
                                     totalPrice,

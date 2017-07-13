@@ -1,31 +1,24 @@
 <template>
     <div class="con">
         <div class="logo-con">
-            <img src="http://avatar.csdn.net/C/B/D/1_u010014658.jpg">
-            <span>李晓</span>
+            <img :src="infos.photos">
+            <span>{{infos.name}}</span>
         </div>
 
         <div class="detail">
             <div class="info">
                 <div class="title">简介：</div>
-                <div class="content">
-                    我爱我妻母婴护理中心，就是希望中国的妈妈们不要再因坐不好月子而担心，而留下月子病，而且对月嫂进行严格的身份认证和资格认证，消费者根据自己的需要订制服务。“郑州我爱我妻”真正的解决中国妈妈所有和月子相关的问题，让能够轻松、健康、愉快的渡过人生中最重要的一个月。
-                </div>
+                <div class="content" v-html="infos.profile"></div>
                 <div class="worktime">
                     <span class="text">工作时间：</span>
                     <div class="con">
-                        <div>星期一</div>
-                        <div>星期二</div>
-                        <div>星期三</div>
-                        <div>星期一</div>
-                        <div>星期二</div>
-                        <div>星期三</div>
+                        <div v-for="day in infos.workDay" style="display: inline-block">{{day}}</div>
                     </div>
                 </div>
 
                 <div class="tit">证件：</div>
                 <div class="tit-con">
-                    <img src="http://gjb4.95081.com/dataFile/gjbv40/person/photo/201410/05/VFWGAXSP_180.jpg">
+                    <img v-for="(img, idx) in imageList" :src="img.imagePath" :key="idx">
                 </div>
             </div>
         </div>
@@ -35,10 +28,28 @@
 </template>
 <script>
     import JumpBack from '../../components/JumpBack/JumpBack.vue'
+    import {baseURL} from '../../api/config'
 
     export default {
+        created() {
+            this.$http.get(`${baseURL}/wechat/nurseryTeacher/${this.$route.params.id}`).then(res => {
+                if (res.body.code == 200) {
+                    console.log(res.body.data);
+                    let {name, photos, profile, workDays, imageList} = res.body.data;
+                    // TODO: imageList
+                    this.infos = {
+                        name, photos, profile, imageList,
+                        workDay: workDays.split('，')
+                    };
+                }
+            })
+        },
         data () {
-            return {}
+            return {
+                infos: {
+                    imageList: []
+                }
+            }
         },
         components: {
             JumpBack
