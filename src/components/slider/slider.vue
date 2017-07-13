@@ -7,7 +7,7 @@
         <div class="dots" v-show="false">
             <span class="dot" :class="{active: currentPageIndex === index }" v-for="(item, index) in dots"></span>
         </div>
-        <div class="text" v-show="!!storeName">{{this.storeName}}</div>
+        <div class="text" v-show="!!storeName">{{storeName}}</div>
     </div>
 </template>
 <script>
@@ -131,7 +131,6 @@
             position: relative
             overflow: hidden
             white-space: nowrap
-            height 220px
             .slider-item
                 float: left
                 box-sizing: border-box
@@ -145,6 +144,7 @@
                 img
                     display: block
                     width: 100%
+                    height 220px
         .dots
             position: absolute
             right: 0

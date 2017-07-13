@@ -39,7 +39,7 @@
 
                     let screen = window.screen.height;
                     let top = this.$refs.more.getBoundingClientRect().top;
-                    if (top < screen) {
+                    if (top < screen + 50) {
                         this.$emit('needData')
                     }
                 }, 50);
@@ -53,5 +53,6 @@
         text-align: center;
         border-top: 1px solid #d5d5d5;
         color: #ccc;
+        padding-bottom 15vw
     }
 </style>

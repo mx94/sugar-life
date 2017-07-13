@@ -17,16 +17,14 @@
     import {baseURL} from '../../api/config'
 
     export default {
-        props: ['page'],
+        props: ['page', 'storeId'],
+        watch: {
+            page(newPage) {
+                this.updateList(newPage)
+            }
+        },
         created() {
-            this.$http.get(`${baseURL}/wechat/comments?limit=10&page=1&offset=0&businessId=${this.page}`).then(res => {
-                if (res.body.code == 200) {
-                    res.body.data.forEach(item => {
-                        let {userId, nickName, comments, servicename, userPhoto} = item;
-                        this.commentss.push({userId, nickName, comments, servicename, userPhoto});
-                    })
-                }
-            })
+            this.updateList(this.page)
         },
         data () {
             return {
@@ -34,13 +32,29 @@
             }
         },
         components: {},
-        methods: {}
+        methods: {
+            updateList(page) {
+                this.$http.get(`${baseURL}/wechat/store/comments?limit=10&page=${page}&businessId=${this.storeId}`).then(res => {
+                    if (res.body.code == 200) {
+                        if (!res.body.data.items.length) {
+                            this.$emit('noData')
+                            return
+                        }
+
+                        res.body.data.items.forEach(item => {
+                            let {userId, nickName, comments, servicename, userPhoto} = item;
+                            this.commentss.push({userId, nickName, comments, servicename, userPhoto});
+                        })
+                    }
+                })
+            }
+        }
     }
 </script>
 <style scoped lang="stylus" rel="stylesheet/stylus">
     .comment
         background-color #fff
-        margin 10px 0
+        margin 10px 0 0
         .title
             padding-left 15px
             color #333
@@ -54,7 +68,7 @@
         .list-item
             position: relative
             padding-bottom 10px
-            min-height: 130px;
+            min-height: 105px;
             border-bottom 1px solid #f0f0f0
             img
                 position: absolute
@@ -62,6 +76,7 @@
                 top 10px
                 width 30px
                 height 30px
+                border-radius 50%
             .username
                 position: absolute
                 left 40px
@@ -76,8 +91,10 @@
                 border-radius 3px
                 background-color rgba(99, 135, 205, .1)
                 padding 10px
+                width calc(100% - 40px)
+                box-sizing border-box
                 p:first-child
-                    display: -webkit-box;
+                    display -webkit-box
                     -webkit-line-clamp: 3;
                     -webkit-box-orient: vertical;
                     overflow: hidden;

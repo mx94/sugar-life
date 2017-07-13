@@ -50,8 +50,8 @@
             this.$http.get(`${baseURL}/app/profile`).then(res => {
                 if (res.body.code == 200) {
                     console.log(res.body);
-                    let {userId, nickname, cellphone} = res.body.data
-                    this.infos = {userId, nickname, cellphone, photo: 'http://avatar.csdn.net/C/B/D/1_u010014658.jpg'}
+                    let {userId, nickname, cellphone, photo} = res.body.data
+                    this.infos = {userId, nickname, cellphone, photo}
                 }
             })
         },

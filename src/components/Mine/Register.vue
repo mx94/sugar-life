@@ -23,19 +23,35 @@
                 <label><i class="icon-password"></i></label>
                 <input type="password" placeholder="请输入6-20位数字或字母的密码" v-model="info.password">
             </div>
-            <span class="duty"><i class="icon-choose"></i>我已阅读并同意<a href="javascript:;">《乐宝时代用户协议》</a></span>
+            <span class="duty" @click="changeModal">
+                <i class="icon-choose"></i>我已阅读并同意<span>《乐宝时代用户协议》</span>
+            </span>
             <mt-button class="btn" type="primary" @click="registe">注册并登录</mt-button>
         </div>
+
+        <!--用户协议-->
+        <mt-popup v-model="popupVisible" popup-transition="popup-fade">
+            <div class="mint-popup mint-popup-1">{{content}}</div>
+        </mt-popup>
     </div>
 </template>
 <script>
     import MtHeader from "../../../node_modules/mint-ui/packages/header/src/header";
     import MtButton from "../../../node_modules/mint-ui/packages/button/src/button";
     import Toast from 'mint-ui/packages/toast'
+    import { Popup } from 'mint-ui';
     import { baseURL } from '../../api/config'
     import {getCookie, setCookie} from '../../common/js/utils'
+    import MtPopup from "../../../node_modules/mint-ui/packages/popup/src/popup";
 
     export default {
+        created() {
+            this.$http.get(`${baseURL}/app/aboutUs/getInfo`).then(res => {
+                if (res.body.code == 200) {
+                    this.content = res.body.data.declaration
+                }
+            }).catch(e => console.log(e))
+        },
         beforeDestroy() {
             this.timer = null
         },
@@ -48,14 +64,20 @@
                 },
                 showTimeout: false,
                 second: 60,
-                timer: null
+                timer: null,
+                popupVisible: false,
+                content: ''
             }
         },
         components: {
+            MtPopup,
             MtHeader,
             MtButton
         },
         methods: {
+            changeModal() {
+                this.popupVisible = !this.popupVisible
+            },
             alertToast(msg) {
                 Toast({
                     message: msg,
@@ -203,6 +225,13 @@
                     background-repeat no-repeat
                     background-size 14px 14px
                     margin-right 5px
-                a
+                span
                     color #6389cd
+        .mint-popup-1
+            width: 200px
+            border-radius 8px
+            padding 15px
+            -webkit-transform translate(-50%)
+            transform translate(-50%)
+            color #333
 </style>

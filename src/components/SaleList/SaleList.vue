@@ -10,7 +10,7 @@
                             <star :count="list.starRating"></star>
                         </div>
                         <div class="distance" v-show="hasPos && !otherCityFlag">距离:<span>{{ list.distance }}m</span></div>
-                        <div class="distance cityname" v-show="otherCityFlag">{{otherCityName}}</div>
+                        <div class="distance cityname" v-show="otherCityFlag">{{list.cityName}}</div>
                     </div>
                 </div>
             </div>
@@ -96,8 +96,8 @@
                             return
                         }
                         result.data.items.forEach(item => {
-                            let {id, logo, storeName, starRating, distance, profile} = item;
-                            this.lists.push({id, logo, storeName, starRating, distance, profile});
+                            let {id, logo, storeName, starRating, distance, profile, cityname} = item;
+                            this.lists.push({id, logo, storeName, starRating, distance, profile, cityname});
                         })
                     } else {
                         Toast({

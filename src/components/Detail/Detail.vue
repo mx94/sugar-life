@@ -35,7 +35,9 @@
             </div>
         </div>
         <!--用户评论-->
-        <user-comment :storeId="info.id" :page="page"></user-comment>
+        <user-comment :storeId="info.id" :page="page" @noData="noData"></user-comment>
+        <!--加载更多-->
+        <load-more @needData="needData" :hasMore="hasMore"></load-more>
         <!--后退按钮-->
         <jump-back @jumpBack="jumpBack"></jump-back>
     </div>
@@ -45,6 +47,7 @@
     import SellerConfig from '../../components/SellerConfig/SellerConfig.vue'
     import UserComment from '../../components/UserComment/UserComment.vue'
     import JumpBack from '../../components/JumpBack/JumpBack.vue'
+    import LoadMore from '../../components/LoadMore/LoadMore.vue'
     import {baseURL} from '../../api/config'
 
     export default {
@@ -59,7 +62,8 @@
         },
         data () {
             return {
-                page: 0,
+                page: 1,
+                hasMore: true,
                 info: {},
                 facilities: '',
                 mapInfo: {},
@@ -70,9 +74,18 @@
             Slider,
             SellerConfig,
             UserComment,
-            JumpBack
+            JumpBack,
+            LoadMore
         },
         methods: {
+            noData() {
+                this.hasMore = false
+            },
+            needData() {
+                if (this.hasMore) {
+                    this.page++
+                }
+            },
             jumpBack() {
                 this.$router.go(-1)
             },

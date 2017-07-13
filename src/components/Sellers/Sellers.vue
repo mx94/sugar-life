@@ -44,7 +44,7 @@
                 hasMore: true,
                 serviceType: '',
                 serviceTypeId: '',
-                page: 0
+                page: 1
             }
         },
         components: {
