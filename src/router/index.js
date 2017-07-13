@@ -1,25 +1,46 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Main from '@/components/Main/Main'
-import Sellers from '@/components/Sellers/Sellers'
-import Indent from '@/components/Indent/Indent'
-import IndentDetail from '@/components/IndentDetail/IndentDetail'
-import Refund from '@/components/Refund/Refund'
-import Mine from '@/components/Mine/Mine'
-import Register from '@/components/Mine/Register'
-import ChangePassword from '@/components/Mine/ChangePassword'
-import Changename from '@/components/Mine/Changename'
-import Profile from '@/components/Mine/Profile'
-import Detail from '@/components/Detail/Detail'
-import Service from '@/components/Service/Service'
-import Baby from '@/components/Baby/Baby'
-import BabyDetail from '@/components/BabyDetail/BabyDetail'
-import PayDetail from '@/components/PayDetail/PayDetail'
-import Pay from '@/components/Pay/Pay'
-import PaySuccess from '@/components/Pay/PaySuccess'
-import PayFail from '@/components/Pay/PayFail'
-import CitySelect from '@/components/CitySelect/CitySelect'
-import Download from '@/components/Download/Download'
+import { Indicator } from 'mint-ui';
+
+const Main = resolve => {
+    Indicator.open({
+        text: '加载中...',
+        spinnerType: 'fading-circle'
+    });
+    require.ensure(['@/components/Main/Main'], () => {
+        resolve(require('@/components/Main/Main'))
+        Indicator.close()
+    })
+}
+const Sellers = resolve => require(['@/components/Sellers/Sellers'], resolve)
+const Indent = resolve => require(['@/components/Indent/Indent'], resolve)
+const IndentDetail = resolve => require(['@/components/IndentDetail/IndentDetail'], resolve)
+const Refund = resolve => require(['@/components/Refund/Refund'], resolve)
+const Mine = resolve => require(['@/components/Mine/Mine'], resolve)
+const Register = resolve => require(['@/components/Mine/Register'], resolve)
+const ChangePassword = resolve => require(['@/components/Mine/ChangePassword'], resolve)
+const Changename = resolve => require(['@/components/Mine/Changename'], resolve)
+const Profile = resolve => require(['@/components/Mine/Profile'], resolve)
+const Detail = resolve => {
+    Indicator.open({
+        text: '加载中...',
+        spinnerType: 'fading-circle'
+    });
+    require.ensure(['@/components/Detail/Detail'], () => {
+        resolve(require('@/components/Detail/Detail'))
+        Indicator.close()
+    })
+}
+
+const Service = resolve => require(['@/components/Service/Service'], resolve)
+const Baby = resolve => require(['@/components/Baby/Baby'], resolve)
+const BabyDetail = resolve => require(['@/components/BabyDetail/BabyDetail'], resolve)
+const PayDetail = resolve => require(['@/components/PayDetail/PayDetail'], resolve)
+const Pay = resolve => require(['@/components/Pay/Pay'], resolve)
+const PaySuccess = resolve => require(['@/components/Pay/PaySuccess'], resolve)
+const PayFail = resolve => require(['@/components/Pay/PayFail'], resolve)
+const CitySelect = resolve => require(['@/components/CitySelect/CitySelect'], resolve)
+const Download = resolve => require(['@/components/Download/Download'], resolve)
 
 Vue.use(Router)
 
