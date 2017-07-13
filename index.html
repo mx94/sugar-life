@@ -31,8 +31,8 @@
                     geoc.getLocation(pt, function (rs) {
                         var addComp = rs.addressComponents;
                         var city = addComp.city;
-                        setCookie('lat', currentLat, 7200);
-                        setCookie('lon', currentLon, 7200);
+                        setCookie('lat', currentLat, 60);
+                        setCookie('lon', currentLon, 60);
                         localStorage.setItem('city', city);
                         var addComp = rs.addressComponents;
                         var texts = addComp.district + "-" + addComp.street + "-" + addComp.streetNumber;

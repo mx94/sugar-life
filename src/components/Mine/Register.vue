@@ -103,7 +103,7 @@
                     switch (res.body.code) {
                         case '200':
                             document.cookie = `token=${res.body.data}`;
-                            setCookie('token', res.body.data, 7200);
+                            setCookie('token', res.body.data, 60);
                             this.alertToast('注册成功');
                             this.$router.push('/');
                             break;

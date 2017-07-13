@@ -21,7 +21,7 @@
         <!--地理位置-->
         <div class="map">
             <div class="title">地理位置</div>
-            <div class="map-img" v-show="this.myMapInfo">
+            <div class="map-img" v-if="this.myMapInfo">
                 <el-amap vid="amap" :zoom="myMapInfo.zoom" :center="myMapInfo.center">
                     <el-amap-marker :key="idx" v-for="(marker, idx) in myMapInfo.markers" :animation="marker.animation" :position="marker.position"
                                     :events="marker.events" :visible="marker.visible"
@@ -31,7 +31,7 @@
             <div class="address">
                 <i class="icon-address"></i>
                 <span class="text">地址：<span>{{info.storeAddress}}</span></span>
-                <a :href="`tel:${info.telephone}#mp.weixin.qq.com`"></a>
+                <a :href="`tel:${info.telephone}`"></a>
             </div>
         </div>
         <!--用户评论-->

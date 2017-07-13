@@ -1,6 +1,6 @@
 <template>
     <div>
-        <mt-header title="提交订单" class="m-header">
+        <mt-header title="提交订单" class="m-header-pay">
             <span @click="$router.go(-1)" slot="left">
                 <mt-button icon="back" name="back"></mt-button>
             </span>
@@ -161,11 +161,9 @@
     }
 </script>
 <style lang="stylus" rel="stylesheet/stylus">
-    @import "~common/stylus/variable.styl"
-
-    .m-header
+    .m-header-pay
         height 49px
-        background-color $color-theme
+        background-color #6389cd !important
         font-size 16px
 
     .pay-form

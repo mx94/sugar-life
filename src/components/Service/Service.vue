@@ -76,7 +76,7 @@
                                 unitPrice,
                                 saleNumber,
                                 serviceDetail,
-                                image: imageList[0].imagePath,
+                                image: imageList.length ? imageList[0].imagePath : null,
                                 serviceName
                             }
 

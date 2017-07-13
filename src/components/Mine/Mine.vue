@@ -68,7 +68,7 @@
                 }
                 this.$http.post(baseURL + '/app/auth/login', this.info).then(res => {
                     if (res.body.code == '200') {
-                        setCookie('token', res.body.data, 7200)
+                        setCookie('token', res.body.data, 60)
                         this.alertToast('登录成功');
                         this.$router.push('/');
                     } else {

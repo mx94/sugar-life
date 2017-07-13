@@ -32,7 +32,6 @@
         },
         created() {
             this.$http.get(`${baseURL}/wechat/store/findAllCityName`).then(res => {
-                console.log(res.body);
                 if (res.body.code == 200) {
                     this.lists = res.body.data
                 }

@@ -44,7 +44,8 @@
     .image
         width 100vw
         height 80vw
-        bg-image('./more')
+        background-image url("./more@2x.png")
+        background-repeat no-repeat
         background-size 100vw 80vw
 
     .btn-con
