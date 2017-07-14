@@ -142,7 +142,7 @@
                             openId: localStorage.getItem('openId')
                         }).then(res => {
                             // 唤起微信支付
-                            console.log(res.body);
+                            alert(res.body.data.app.id);
 
 //                            let flag = confirm('支付成功？')
 //                            if (flag) {
