@@ -16,7 +16,8 @@
                     <div class="mint-cell-title"><span class="mint-cell-text">数量：</span></div>
                     <div class="mint-cell-value">
                         <mt-button type="default" size="small" @click="mini">-</mt-button>
-                        <input placeholder="请输入数字" number="true" type="number" class="mint-field-core count" v-model="other.count" disabled="disabled">
+                        <input placeholder="请输入数字" number="true" type="number" class="mint-field-core count"
+                               v-model="other.count" disabled="disabled">
                         <mt-button type="default" size="small" @click="sum">+</mt-button>
                     </div>
                 </div>
@@ -26,9 +27,11 @@
             <mt-field label="绑定手机号：" :readonly="true" v-model="other.phoneNumber"></mt-field>
             <mt-field label="订单时间：" :readonly="true" v-model="other.orderTime"></mt-field>
 
-            <a class="mint-cell mint-field" style="padding-bottom: 50px; background-image: none; border-bottom: 1px dotted #ffeb93">
+            <a class="mint-cell mint-field"
+               style="padding-bottom: 50px; background-image: none; border-bottom: 1px dotted #ffeb93">
                 <div class="mint-cell-wrapper" style="position: relative; background-image: none">
-                    <div class="mint-cell-title"><span class="mint-cell-text"><i class="icon-wechat"></i><span class="wechat-text">微信支付</span></span></div>
+                    <div class="mint-cell-title"><span class="mint-cell-text"><i class="icon-wechat"></i><span
+                        class="wechat-text">微信支付</span></span></div>
                     <div class="mint-cell-value">
                         <mt-radio
                             align="right"
@@ -52,7 +55,7 @@
     import MtField from "../../../node_modules/mint-ui/packages/field/src/field";
     import MtRadio from "../../../node_modules/mint-ui/packages/radio/src/radio";
     import {baseURL} from '../../api/config'
-    import {formatDate, getCookie} from '../../common/js/utils'
+    import {formatDate, getCookie, randomWord} from '../../common/js/utils'
 
     export default {
         beforeRouteEnter(to, from, next) {
@@ -138,12 +141,49 @@
                             amount: this.total
                         }).then(res => {
                             // 唤起微信支付
-                            let flag = confirm('支付成功？')
-                            if (flag) {
-                                this.$router.replace('/paysuccess/' + this.info.storeId)
-                            } else {
-                                this.$router.replace('/payfail/' + this.info.storeId)
+
+//                            let flag = confirm('支付成功？')
+//                            if (flag) {
+//                                this.$router.replace('/paysuccess/' + this.info.storeId)
+//                            } else {
+//                                this.$router.replace('/payfail/' + this.info.storeId)
+//                            }
+
+                            if (res.body.code == 200) {
+                                let result = res.body.data;
+
+                                function onBridgeReady() {
+                                    WeixinJSBridge.invoke(
+                                        'getBrandWCPayRequest', {
+                                            "appId": result.app.id,     //公众号名称，由商户传入
+                                            "timeStamp": Date.parse( new Date() ).toString().substr(0, 10),         //时间戳，自1970年以来的秒数
+                                            "nonceStr": randomWord(true, 16, 32), //随机串
+                                            "package": "prepay_id=u802345jgfjsdfgsdg888",
+                                            "signType": "MD5",         //微信签名方式：
+                                            "paySign": "70EA570631E4BB79628FBCA90534C63FF7FADD89" //微信签名
+                                        },
+                                        function (wxres) {
+                                            if (wxres.err_msg == "get_brand_wcpay_request:ok") {
+                                                alert('ok')
+                                            } else {
+                                                alert(wxres.err)
+                                            }
+                                        }
+                                    );
+                                }
+
+                                if (typeof WeixinJSBridge == "undefined") {
+                                    if (document.addEventListener) {
+                                        document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+                                    } else if (document.attachEvent) {
+                                        document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
+                                        document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+                                    }
+                                } else {
+                                    onBridgeReady();
+                                }
                             }
+
                         }).catch(e => console.log(e))
                     }
                 }).catch(e => console.log(e))
@@ -205,6 +245,7 @@
             left: 40px;
             font-size 12px
             color #333
+
     .pay-form-submit
         margin 0 15px
         height 90px
