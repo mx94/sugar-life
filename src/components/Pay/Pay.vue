@@ -142,7 +142,7 @@
                             order_no: `FW${order_no}`,
                             channel: 'wx_pub',
                             amount: this.total,
-                            openId: sessionStorage.getItem('openId') || 'ohi2TwdIUr4G10TnNSfiNWW2QMXg'
+                            openId: sessionStorage.getItem('openId')
                         }).then(res => {
                             // 唤起微信支付
                             let result = res.body.data
