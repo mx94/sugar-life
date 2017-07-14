@@ -16,7 +16,7 @@
                     <div class="mint-cell-title"><span class="mint-cell-text">数量：</span></div>
                     <div class="mint-cell-value">
                         <mt-button type="default" size="small" @click="mini">-</mt-button>
-                        <input placeholder="请输入数字" number="true" type="number" class="mint-field-core count" v-model="other.count">
+                        <input placeholder="请输入数字" number="true" type="number" class="mint-field-core count" v-model="other.count" disabled="disabled">
                         <mt-button type="default" size="small" @click="sum">+</mt-button>
                     </div>
                 </div>
