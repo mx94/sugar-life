@@ -111,7 +111,8 @@
             return {
                 info: {},
                 other: {},
-                payFlag: false
+                payFlag: false,
+                order_no: ''
             }
         },
         components: {
@@ -138,6 +139,7 @@
                 }).then(res => {
                     if (res.body.code == 200) {
                         let order_no = res.body.data.id;
+                        this.order_no = order_no;
                         this.$http.post(`${baseURL}/app/pay`, {
                             order_no: `FW${order_no}`,
                             channel: 'wx_pub',
@@ -166,10 +168,13 @@
                                         function (wxres) {
                                             // alert(wxres.err_msg)
                                             if (wxres.err_msg == "get_brand_wcpay_request:ok") {
-                                                // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回 ok，但并不保证它绝对可靠
                                                 vm.$router.replace('/paysuccess/' + vm.info.storeId)
                                             } else {
-                                                vm.$router.replace('/payfail/' + vm.info.storeId)
+                                                vm.$http.put(`${baseURL}/wechat/order/payFail/${vm.order_no}`).then(resu => {
+                                                    if (resu.body.code == 200) {
+                                                        vm.$router.replace('/payfail/' + vm.info.storeId)
+                                                    }
+                                                })
                                             }
                                         }
                                     );
