@@ -139,10 +139,11 @@
                             order_no: `FW${order_no}`,
                             channel: 'wx_pub',
                             amount: this.total,
-                            openId: localStorage.getItem('openId')
+                            openId: sessionStorage.getItem('openId') || 'ohi2TwdIUr4G10TnNSfiNWW2QMXg'
                         }).then(res => {
                             // 唤起微信支付
-                            alert(res.body.data.app.id);
+                            let result = res.body.data
+                            console.log(result);
 
 //                            let flag = confirm('支付成功？')
 //                            if (flag) {
@@ -152,31 +153,34 @@
 //                            }
 
                             if (res.body.code == 200) {
-                                let result = res.body.data;
+                                let wx_data = result.credential.wx;
+
                                 function onBridgeReady() {
+                                    alert('准备支付');
                                     WeixinJSBridge.invoke(
                                         'getBrandWCPayRequest', {
-                                            "appId": result.app.id,     //公众号名称，由商户传入
-                                            "timeStamp": Date.parse( new Date() ).toString().substr(0, 10),         //时间戳，自1970年以来的秒数
-                                            "nonceStr": randomWord(true, 16, 32), //随机串
-                                            "package": "prepay_id=u802345jgfjsdfgsdg888",
-                                            "signType": "MD5",         //微信签名方式：
-                                            "paySign": "70EA570631E4BB79628FBCA90534C63FF7FADD89" //微信签名
+                                            "appId": wx_data.appid,     //公众号名称，由商户传入
+                                            "timeStamp": wx_data.timestamp,         //时间戳，自1970年以来的秒数
+                                            "nonceStr": wx_data.noncestr, //随机串
+                                            "package": wx_data.package,
+                                            "signType": wx_data.signType,         //微信签名方式：
+                                            "paySign": wx_data.paySign //微信签名
                                         },
-                                        function (wxres) {
-                                            if (wxres.err_msg == "get_brand_wcpay_request:ok") {
-                                                alert('ok')
+                                        function (res) {
+                                            if (res.err_msg == "get_brand_wcpay_request:ok") {
+                                                // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回 ok，但并不保证它绝对可靠
+                                                this.$router.replace('/paysuccess/' + this.info.storeId)
                                             } else {
-                                                alert(wxres.err)
+                                                this.$router.replace('/payfail/' + this.info.storeId)
                                             }
                                         }
                                     );
                                 }
 
                                 if (typeof WeixinJSBridge == "undefined") {
+                                    alert('不在微信环境')
                                     if (document.addEventListener) {
                                         document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
-                                        alert('not ready')
                                     } else if (document.attachEvent) {
                                         document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
                                         document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);

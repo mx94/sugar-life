@@ -10,6 +10,7 @@
             src="http://api.map.baidu.com/api?v=2.0&ak=lide0hVBWmq1kBUjsKXn41GeZieMpd3B"></script>
     <script type="text/javascript" charset="utf-8">
         window.getCurPos = function () {
+            // 获取code
             var obj = {};
             var result = null;
             var reg = /([^?=&]+)=([^?=&]+)/g;
@@ -17,18 +18,21 @@
                 obj[arguments[1]] = arguments[2];
             });
 
-            let xhr = new XMLHttpRequest();
-            xhr.open('get', '/platform/wechat/getOpenId?code=' + obj.code, false);
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState == 4) {
-                    if (xhr.status == 200) {
-                        result = JSON.parse(xhr.responseText)
-                        localStorage.setItem('openId', result.data.openId);
-                        alert(localStorage.getItem('openId'))
+            // 获取用户openId
+            if (obj.code) {
+                let xhr = new XMLHttpRequest();
+                xhr.open('get', '/platform/wechat/getOpenId?code=' + obj.code, false);
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState == 4) {
+                        if (xhr.status == 200) {
+                            result = JSON.parse(xhr.responseText)
+                            sessionStorage.setItem('openId', result.data.openId);
+                            alert(sessionStorage.getItem('openId'))
+                        }
                     }
                 }
+                xhr.send(null);
             }
-            xhr.send(null);
 
             function setCookie(cname, cvalue, exdays) {
                 var d = new Date();
@@ -37,6 +41,7 @@
                 document.cookie = cname + "=" + cvalue + "; " + expires;
             }
 
+            // 得到经纬度，城市名
             var geolocation = new BMap.Geolocation();
             geolocation.getCurrentPosition(function (r) {
                 console.log(this, geolocation)
@@ -60,7 +65,7 @@
         }
         getCurPos();
     </script>
-    <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+    <!--<script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>-->
 </head>
 <body>
 <div id="app"></div>
