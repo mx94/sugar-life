@@ -32,12 +32,13 @@ export function clearCookie(name) {
 
 // 时间戳转时间
 export function formatDate(now) {
+    ('0' + now.getHours()).slice(-2)
     var year = new String(now.getYear()).slice(1);
     var month = now.getMonth() + 1;
     var date = now.getDate();
-    var hour = now.getHours();
-    var minute = now.getMinutes();
-    var second = now.getSeconds();
+    var hour = ('0' + now.getHours()).slice(-2);
+    var minute = ('0' + now.getMinutes()).slice(-2);
+    var second = ('0' + now.getSeconds()).slice(-2);
     return "20" + year + "-" + month + "-" + date + " " + hour + ":" + minute + ":" + second;
 }
 

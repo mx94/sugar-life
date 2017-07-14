@@ -60,7 +60,7 @@
                 </div>
                 <div class="order-item">
                     <div class="label">下单时间：</div>
-                    <div class="value">2016-10-09 12:00:00</div>
+                    <div class="value">{{infos.createTime}}</div>
                 </div>
                 <div class="order-item" v-if="this.refundFlag">
                     <mt-button

@@ -16,7 +16,7 @@
                     <div class="count">数量：{{info.buyNumber}}</div>
                     <div class="other">
                         <div class="price">总价：{{info.totalPrice}}</div>
-                        <div class="create-time">{{info.orderCreateTime}}</div>
+                        <div class="create-time">{{info.createTime}}</div>
                     </div>
                 </div>
                 <mt-button v-show="info.orderStatus === 'WAITING_FOR_PAY'" type="primary" size="small" class="pay-btn" :plain="true" @click.stop="jumpToPay(info.serviceId)">付款</mt-button>
@@ -31,8 +31,7 @@
     import MtButton from "../../../node_modules/mint-ui/packages/button/src/button";
     import DTooltip from '../../components/DTooltip/DTooltip.vue'
     import {baseURL} from '../../api/config'
-    import {formatDate} from '../../common/js/utils'
-    import {getCookie} from '../../common/js/utils'
+    import {formatDate, getCookie} from '../../common/js/utils'
 
     export default {
         beforeRouteEnter(to, from, next) {
@@ -65,7 +64,8 @@
                                     totalPrice,
                                     orderCreateTime,
                                     orderStatus,
-                                    serviceImageList
+                                    serviceImageList,
+                                    createTime
                                 } = item
                                 this.infos.push({
                                     id,
@@ -76,7 +76,7 @@
                                     buyNumber,
                                     totalPrice,
                                     orderStatus,
-                                    orderCreateTime: formatDate(new Date(orderCreateTime)),
+                                    createTime: formatDate(new Date(createTime)),
                                     logo: serviceImageList[0]['imagePath']
                                 })
                             })

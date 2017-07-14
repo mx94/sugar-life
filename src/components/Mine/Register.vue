@@ -30,8 +30,8 @@
         </div>
 
         <!--用户协议-->
-        <mt-popup v-model="popupVisible" popup-transition="popup-fade">
-            <div class="mint-popup mint-popup-1">{{content}}</div>
+        <mt-popup v-model="popupVisible" popup-transition="popup-fade" position="top">
+            <div class="mint-popup mint-popup-1" style="top: 60px">{{content}}</div>
         </mt-popup>
     </div>
 </template>
@@ -228,7 +228,9 @@
                 span
                     color #6389cd
         .mint-popup-1
-            width: 200px
+            width: 250px
+            height 400px
+            overflow scroll
             border-radius 8px
             padding 15px
             -webkit-transform translate(-50%)

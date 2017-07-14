@@ -27,7 +27,6 @@
                         if (xhr.status == 200) {
                             result = JSON.parse(xhr.responseText)
                             sessionStorage.setItem('openId', result.data.openId);
-                            alert(sessionStorage.getItem('openId'))
                         }
                     }
                 }
