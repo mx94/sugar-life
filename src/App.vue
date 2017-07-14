@@ -8,7 +8,9 @@
         created() {
             this.code = this.getCode();
             this.$http.get(`${baseURL}/wechat/getOpenId?code=${this.code}`).then(res => {
+                console.log(res.body)
                 if (res.body.code == 200) {
+                    alert(res.body)
                     localStorage.setItem('openId', res.body.data.openId);
                     alert(localStorage.getItem('openId'))
                 }

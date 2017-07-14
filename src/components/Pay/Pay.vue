@@ -138,7 +138,8 @@
                         this.$http.post(`${baseURL}/app/pay`, {
                             order_no: `FW${order_no}`,
                             channel: 'wx_pub',
-                            amount: this.total
+                            amount: this.total,
+                            openId: localStorage.getItem('openId')
                         }).then(res => {
                             // 唤起微信支付
                             console.log(res.body);
