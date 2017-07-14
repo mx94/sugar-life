@@ -159,9 +159,9 @@
                                     alert('准备支付');
                                     WeixinJSBridge.invoke(
                                         'getBrandWCPayRequest', {
-                                            "appId": wx_data.appid,     //公众号名称，由商户传入
-                                            "timeStamp": wx_data.timestamp,         //时间戳，自1970年以来的秒数
-                                            "nonceStr": wx_data.noncestr, //随机串
+                                            "appId": wx_data.appId,     //公众号名称，由商户传入
+                                            "timeStamp": wx_data.timeStamp,         //时间戳，自1970年以来的秒数
+                                            "nonceStr": wx_data.nonceStr, //随机串
                                             "package": wx_data.package,
                                             "signType": wx_data.signType,         //微信签名方式：
                                             "paySign": wx_data.paySign //微信签名
