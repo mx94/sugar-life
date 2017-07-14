@@ -10,6 +10,26 @@
             src="http://api.map.baidu.com/api?v=2.0&ak=lide0hVBWmq1kBUjsKXn41GeZieMpd3B"></script>
     <script type="text/javascript" charset="utf-8">
         window.getCurPos = function () {
+            var obj = {};
+            var result = null;
+            var reg = /([^?=&]+)=([^?=&]+)/g;
+            location.search.replace(reg, function() {
+                obj[arguments[1]] = arguments[2];
+            });
+
+            let xhr = new XMLHttpRequest();
+            xhr.open('get', '/platform/wechat/getOpenId?code=' + obj.code, false);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+                    if (xhr.status == 200) {
+                        result = JSON.parse(xhr.responseText)
+                        localStorage.setItem('openId', result.data.openId);
+                        alert(localStorage.getItem('openId'))
+                    }
+                }
+            }
+            xhr.send(null);
+
             function setCookie(cname, cvalue, exdays) {
                 var d = new Date();
                 d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
