@@ -122,6 +122,7 @@
         },
         methods: {
             payIt() {
+                if (this.payFlag) return;
                 this.payFlag = true;
                 this.$http.post(`${baseURL}/wechat/order`, {
                     storeId: this.info.storeId,
@@ -145,11 +146,11 @@
                         }).then(res => {
                             // 唤起微信支付
                             let result = res.body.data
-                            this.payFlag = false;
 
                             if (res.body.code == 200) {
                                 let wx_data = result.credential.wx;
                                 let vm = this;
+                                vm.payFlag = false;
 
                                 function onBridgeReady() {
                                     // alert('准备支付');
