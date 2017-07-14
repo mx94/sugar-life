@@ -141,6 +141,7 @@
                             amount: this.total
                         }).then(res => {
                             // 唤起微信支付
+                            console.log(res.body);
 
 //                            let flag = confirm('支付成功？')
 //                            if (flag) {
@@ -151,7 +152,6 @@
 
                             if (res.body.code == 200) {
                                 let result = res.body.data;
-
                                 function onBridgeReady() {
                                     WeixinJSBridge.invoke(
                                         'getBrandWCPayRequest', {
@@ -175,6 +175,7 @@
                                 if (typeof WeixinJSBridge == "undefined") {
                                     if (document.addEventListener) {
                                         document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+                                        alert('not ready')
                                     } else if (document.attachEvent) {
                                         document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
                                         document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
