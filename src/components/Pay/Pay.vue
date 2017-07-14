@@ -159,12 +159,12 @@
                                     alert('准备支付');
                                     WeixinJSBridge.invoke(
                                         'getBrandWCPayRequest', {
-                                            "appId": wx_data.appId,     //公众号名称，由商户传入
-                                            "timeStamp": wx_data.timeStamp,         //时间戳，自1970年以来的秒数
-                                            "nonceStr": wx_data.nonceStr, //随机串
+                                            "appId": wx_data.appId,
+                                            "timeStamp": wx_data.timeStamp,
+                                            "nonceStr": wx_data.nonceStr,
                                             "package": wx_data.package,
-                                            "signType": wx_data.signType,         //微信签名方式：
-                                            "paySign": wx_data.paySign //微信签名
+                                            "signType": wx_data.signType,
+                                            "paySign": wx_data.paySign
                                         },
                                         function (res) {
                                             if (res.err_msg == "get_brand_wcpay_request:ok") {
