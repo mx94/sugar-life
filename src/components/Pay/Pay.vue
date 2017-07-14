@@ -45,7 +45,7 @@
 
         <div class="pay-form-submit">
             <span>￥{{ total }}</span>
-            <mt-button type="primary" size="small" class="btn-pay" @click="payIt">支付</mt-button>
+            <mt-button type="primary" size="small" class="btn-pay" @click="payIt" :disabled="payFlag">支付</mt-button>
         </div>
     </div>
 </template>
@@ -110,7 +110,8 @@
         data () {
             return {
                 info: {},
-                other: {}
+                other: {},
+                payFlag: false
             }
         },
         components: {
@@ -121,6 +122,7 @@
         },
         methods: {
             payIt() {
+                this.payFlag = true;
                 this.$http.post(`${baseURL}/wechat/order`, {
                     storeId: this.info.storeId,
                     serviceId: this.info.id,
@@ -143,7 +145,7 @@
                         }).then(res => {
                             // 唤起微信支付
                             let result = res.body.data
-                            console.log(result);
+                            this.payFlag = false;
 
                             if (res.body.code == 200) {
                                 let wx_data = result.credential.wx;
