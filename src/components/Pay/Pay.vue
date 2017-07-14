@@ -145,18 +145,12 @@
                             let result = res.body.data
                             console.log(result);
 
-//                            let flag = confirm('支付成功？')
-//                            if (flag) {
-//                                this.$router.replace('/paysuccess/' + this.info.storeId)
-//                            } else {
-//                                this.$router.replace('/payfail/' + this.info.storeId)
-//                            }
-
                             if (res.body.code == 200) {
                                 let wx_data = result.credential.wx;
+                                let vm = this;
 
                                 function onBridgeReady() {
-                                    alert('准备支付');
+                                    // alert('准备支付');
                                     WeixinJSBridge.invoke(
                                         'getBrandWCPayRequest', {
                                             "appId": wx_data.appId,
@@ -167,12 +161,12 @@
                                             "paySign": wx_data.paySign
                                         },
                                         function (wxres) {
-                                            alert(wxres.err_msg)
+                                            // alert(wxres.err_msg)
                                             if (wxres.err_msg == "get_brand_wcpay_request:ok") {
                                                 // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回 ok，但并不保证它绝对可靠
-                                                this.$router.replace('/paysuccess/' + this.info.storeId)
+                                                vm.$router.replace('/paysuccess/' + vm.info.storeId)
                                             } else {
-                                                this.$router.replace('/payfail/' + this.info.storeId)
+                                                vm.$router.replace('/payfail/' + vm.info.storeId)
                                             }
                                         }
                                     );
