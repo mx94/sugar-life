@@ -228,8 +228,8 @@
                 span
                     color #6389cd
         .mint-popup-1
-            width: 250px
-            height 400px
+            width: 75vw
+            height 90vw
             overflow scroll
             border-radius 8px
             padding 15px
