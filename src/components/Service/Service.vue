@@ -151,6 +151,7 @@
                     width 98%
                     border-color #6389cd
                     color #6389cd
+                    width 45px
         .view-more
             text-align center
             height 32px

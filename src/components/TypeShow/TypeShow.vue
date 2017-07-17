@@ -23,7 +23,7 @@
                         obj.serviceTypeName = serviceTypeName;
                         this.items.push(obj)
                     })
-                    let serviceTypeLogo = require('./icon_Store_weixin@3x.png')
+                    let serviceTypeLogo = require('./allStore.jpg')
                     this.items.push({
                         id: 4396,
                         serviceTypeLogo,

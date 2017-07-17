@@ -9,7 +9,8 @@
                         <div class="star">
                             <star :count="list.starRating"></star>
                         </div>
-                        <div class="distance" v-show="hasPos && !otherCityFlag">距离:<span>{{ list.distance }}m</span></div>
+                        <div class="distance" v-show="hasPos && !otherCityFlag">距离:<span>{{ list.distance }}m</span>
+                        </div>
                         <div class="distance cityname" v-show="otherCityFlag">{{list.cityName}}</div>
                     </div>
                 </div>
@@ -64,12 +65,16 @@
                     if (this.type === 'serviceType') {
                         if (this.serviceTypeId === '4396') {
                             if (this.otherCityFlag) {
-                                this.updateList(`${baseURL}/wechat/store?cityName=${this.otherCityName}&limit=10&page=${page}`)
+                                this.updateList(`${baseURL}/app/store/findAllStore?cityName=${this.otherCityName}&limit=10&page=${page}&gpsLat=${gpsLat}&gpsLong=${gpsLong}`);
                             } else {
-                                this.updateList(`${baseURL}/wechat/store?cityName=${this.ctName}&limit=10&page=${page}`)
+                                this.updateList(`${baseURL}/app/store/findAllStore?cityName=${this.ctName}&limit=10&page=${page}&gpsLat=${gpsLat}&gpsLong=${gpsLong}`);
                             }
                         } else {
-                            this.updateList(`${baseURL}/wechat/store/findStoreByServiceType?gpsLat=${gpsLat}&gpsLong=${gpsLong}&page=${page}&serviceTypeId=${this.serviceTypeId}`)
+                            if (this.otherCityFlag) {
+                                this.updateList(`${baseURL}/app/store/findStoreByServiceType?gpsLat=${gpsLat}&gpsLong=${gpsLong}&page=${page}&serviceTypeId=${this.serviceTypeId}&cityName=${this.otherCityName}`)
+                            } else {
+                                this.updateList(`${baseURL}/app/store/findStoreByServiceType?gpsLat=${gpsLat}&gpsLong=${gpsLong}&page=${page}&serviceTypeId=${this.serviceTypeId}&cityName=${this.ctName}`)
+                            }
                         }
                     }
                 }
