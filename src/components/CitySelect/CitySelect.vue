@@ -9,7 +9,7 @@
         <div class="city-con">
             <div class="title">当前城市：<span>{{ctName}}</span></div>
             <div class="position">定位城市</div>
-            <div class="city-pos">上海</div>
+            <div class="city-pos" @click="jumpCt()">{{ctName}}</div>
             <div class="position">其他城市</div>
         </div>
 
@@ -58,6 +58,9 @@
                 } else {
                     this[types.IS_OTHER_CITY](false);
                 }
+                this.$router.go(-1)
+            },
+            jumpCt() {
                 this.$router.go(-1)
             }
         }
