@@ -97,7 +97,7 @@
                 this.$http.put(`${baseURL}/app/password`, this.info).then(res => {
                     if (res.body.code == 200) {
                         this.alertToast('修改成功');
-                        this.$router.push('/mine');
+                        this.$router.push('/mine/0');
                     } else {
                         this.alertToast(res.body.message)
                     }

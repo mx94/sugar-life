@@ -21,7 +21,7 @@
 
         <div class="pay-con">
             <span>￥{{info.unitPrice}}</span>
-            <mt-button type="primary" size="small" class="btn-pay" @click="$router.push({path: `/pay/${info.id}`})">购买</mt-button>
+            <mt-button type="primary" size="small" class="btn-pay" @click="gotoPay">购买</mt-button>
         </div>
         <jump-back @jumpBack="$router.go(-1)"></jump-back>
     </div>
@@ -31,6 +31,7 @@
     import JumpBack from '../../components/JumpBack/JumpBack.vue'
     import Slider from '../../components/slider/slider.vue'
     import {baseURL} from '../../api/config'
+    import {getCookie} from '../../common/js/utils'
 
     export default {
         created() {
@@ -40,6 +41,7 @@
                     console.log(result);
                     let {
                         id,
+                        storeId,
                         imageList,
                         unitPrice,
                         serviceName,
@@ -47,6 +49,7 @@
                     } = result.data;
                     this.info = {
                         id,
+                        storeId,
                         imageList,
                         unitPrice,
                         serviceName,
@@ -65,7 +68,15 @@
             JumpBack,
             Slider
         },
-        methods: {}
+        methods: {
+            gotoPay() {
+                if (getCookie('token')) {
+                    this.$router.push({path: `/pay/${this.info.id}`})
+                } else {
+                    this.$router.replace(`/mine/${this.info.storeId}`)
+                }
+            }
+        }
     }
 </script>
 <style scoped lang="stylus" rel="stylesheet/stylus">

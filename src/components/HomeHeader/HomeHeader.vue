@@ -10,7 +10,7 @@
                 <div class="pay"></div>
                 <span>订单</span>
             </router-link>
-            <router-link to="/mine">
+            <router-link to="/mine/0">
                 <div class="mine"></div>
                 <span>我</span>
             </router-link>

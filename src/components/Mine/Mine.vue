@@ -70,7 +70,11 @@
                     if (res.body.code == '200') {
                         setCookie('token', res.body.data, 60)
                         this.alertToast('登录成功');
-                        this.$router.push('/');
+                        if (this.$route.params.storeId != 0) {
+                            this.$router.push(`/detail/${this.$route.params.storeId}/service`)
+                        } else {
+                            this.$router.push('/');
+                        }
                     } else {
                         this.alertToast(res.body.message);
                     }

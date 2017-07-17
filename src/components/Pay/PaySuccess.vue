@@ -17,7 +17,7 @@
                 </div>
                 <div class="btn-con">
                     <div class="btn-item">
-                        <mt-button type="primary" class="look" @click="$router.push('/indent')">查看订单</mt-button>
+                        <mt-button type="primary" class="look" @click="$router.push(`/indentDetail/${$route.params.orderId}`)">查看订单</mt-button>
                     </div>
                     <div class="btn-item">
                         <mt-button type="primary" class="continue" :plain="true"  @click="$router.push(`/detail/${$route.params.storeId}/service`)">继续下单</mt-button>

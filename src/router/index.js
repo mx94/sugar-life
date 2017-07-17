@@ -63,7 +63,7 @@ export default new Router({
             component: Refund
         },
         {
-            path: '/mine',
+            path: '/mine/:storeId',
             component: Mine
         },
         {
@@ -110,7 +110,7 @@ export default new Router({
             component: Pay
         },
         {
-            path: '/paysuccess/:storeId',
+            path: '/paysuccess/:storeId/:orderId',
             component: PaySuccess
         },
         {

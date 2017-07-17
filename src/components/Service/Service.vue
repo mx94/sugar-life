@@ -44,7 +44,7 @@
                 if (getCookie('token')) {
                     this.$router.push(`/pay/${id}`)
                 } else {
-                    this.$router.push('/mine')
+                    this.$router.replace({path: `/mine/${this.$route.params.id}`})
                 }
             },
             slideDown() {

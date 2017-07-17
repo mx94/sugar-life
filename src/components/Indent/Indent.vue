@@ -44,7 +44,7 @@
                     })
                 })
             } else {
-                next({path: '/mine'})
+                next({path: '/mine/0'})
             }
         },
         watch: {

@@ -168,7 +168,7 @@
                                         function (wxres) {
                                             // alert(wxres.err_msg)
                                             if (wxres.err_msg == "get_brand_wcpay_request:ok") {
-                                                vm.$router.replace('/paysuccess/' + vm.info.storeId)
+                                                vm.$router.replace('/paysuccess/' + vm.info.storeId + '/' + vm.order_no)
                                             } else {
                                                 vm.$http.put(`${baseURL}/wechat/order/payFail/${vm.order_no}`).then(resu => {
                                                     if (resu.body.code == 200) {

@@ -45,7 +45,10 @@
 
                 <div class="order-item" v-for="(quan, idx) in infos.voucherList" :key="idx">
                     <div class="label" style="flex: 3">券{{idx + 1}}：<span class="quan">{{quan.id}}</span></div>
-                    <div class="value">{{infos.orderStatusText}}</div>
+                    <div v-if="quan.voucherUseStatus === 'UN_SPEND'" class="value">待消费</div>
+                    <div v-if="quan.voucherUseStatus === 'SPEND_SUCCESS'" class="value">消费成功</div>
+                    <div v-if="quan.voucherUseStatus === 'REFUNDING'" class="value">退款中</div>
+                    <div v-if="quan.voucherUseStatus === 'REFUND_SUCCESS'" class="value">退款成功</div>
                 </div>
 
                 <div class="order-item">
