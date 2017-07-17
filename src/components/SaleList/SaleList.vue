@@ -146,6 +146,8 @@
                 flex 1
                 font-size $font-size-medium-x
                 color $color-text-theme
+                @media only screen and (max-width: 360px)
+                    font-size 14px
             .star-con
                 flex 1
                 display flex

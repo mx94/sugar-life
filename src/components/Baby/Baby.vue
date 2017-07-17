@@ -123,12 +123,14 @@
                 .star-con
                     flex 1
                     font-size 12px
+                    overflow hidden
                     .work-time
                         color #333
                         overflow hidden
                         text-overflow ellipsis
-                        white-space nowrap
-                        width 125px
+                        display -webkit-box
+                        -webkit-line-clamp 2
+                        -webkit-box-orient vertical
             .btn-con
                 flex 1
                 text-align right

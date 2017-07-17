@@ -27,7 +27,7 @@
                     <div class="label">服务：</div>
                     <div class="value">{{infos.serviceName}}</div>
                 </div>
-                <div class="order-item">
+                <div class="order-item" v-show="infos.nurseryTeacherName">
                     <div class="label">育婴师：</div>
                     <div class="value">{{infos.nurseryTeacherName}}</div>
                 </div>
@@ -59,6 +59,7 @@
                     <div class="value" v-if="infos.payType === 'BABY_GOLD'">宝币</div>
                     <div class="value" v-if="infos.payType === 'ALIPAY'">支付宝</div>
                     <div class="value" v-if="infos.payType === 'WECHAT'">微信</div>
+                    <div class="value" v-if="infos.payType === 'WECHAT_PUB'">微信公众号</div>
                     <div class="value" v-if="infos.payType === 'unknow'">取消付款</div>
                 </div>
                 <div class="order-item">

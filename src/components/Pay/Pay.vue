@@ -62,7 +62,7 @@
             if (getCookie('token')) {
                 next()
             } else {
-                next('/mine')
+                next('/mine/0')
             }
         },
         created() {

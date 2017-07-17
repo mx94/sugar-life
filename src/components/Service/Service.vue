@@ -3,7 +3,7 @@
         <router-link v-for="(list, idx) in lists" :key="idx" class="list-item" tag="div" :to="`/paydetail/${list.id}`">
             <img :src="list.image">
             <div class="list-item-content">
-                <span class="sale-name">{{ list.serviceName }}</span>
+                <p class="sale-name">{{ list.serviceName }}</p>
                 <p class="comment">{{ list.serviceDetail }}</p>
                 <div class="star-con">
                     <span class="price">￥{{list.unitPrice}}</span>&nbsp;
@@ -122,7 +122,7 @@
                     flex 1
                     font-size 16px
                     color #333
-                    width 145px
+                    width 160px
                     overflow hidden
                     text-overflow ellipsis
                     white-space nowrap
@@ -148,7 +148,6 @@
                 .btn
                     font-size 12px
                     padding 0 4px
-                    width 98%
                     border-color #6389cd
                     color #6389cd
                     width 45px
