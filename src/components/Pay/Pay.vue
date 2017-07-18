@@ -181,7 +181,8 @@
 //                                                        vm.$router.replace('/payfail/' + vm.info.storeId)
 //                                                    }
 //                                                })
-                                                alert('支付失败')
+                                                alert('支付失败');
+                                                alert(JSON.stringify(wxres))
                                             }
                                         }
                                     );
