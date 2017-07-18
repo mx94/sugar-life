@@ -43,9 +43,6 @@
             </a>
         </div>
 
-        <!--<div style="font-size: 14px; width: 100%; height: 600px; color: #000000;">{{wxdata}}</div>-->
-
-        <input type="text" v-model="wxdata">
         <div class="pay-form-submit">
             <span>￥{{ total }}</span>
             <mt-button type="primary" size="small" class="btn-pay" @click="payIt" :disabled="payFlag">支付</mt-button>
@@ -116,7 +113,6 @@
                 other: {},
                 payFlag: false,
                 order_no: '',
-                wxdata: '123'
             }
         },
         components: {
@@ -158,8 +154,6 @@
                                 let vm = this;
                                 vm.payFlag = false;
 
-                                vm.wxdata = JSON.stringify(wx_data);
-
                                 function onBridgeReady() {
                                     // alert('准备支付');
                                     WeixinJSBridge.invoke(
@@ -176,13 +170,11 @@
                                             if (wxres.err_msg == "get_brand_wcpay_request:ok") {
                                                 vm.$router.replace('/paysuccess/' + vm.info.storeId + '/' + vm.order_no)
                                             } else {
-//                                                vm.$http.put(`${baseURL}/wechat/order/payFail/${vm.order_no}`).then(resu => {
-//                                                    if (resu.body.code == 200) {
-//                                                        vm.$router.replace('/payfail/' + vm.info.storeId)
-//                                                    }
-//                                                })
-                                                alert('支付失败');
-                                                alert(JSON.stringify(wxres))
+                                                vm.$http.put(`${baseURL}/wechat/order/payFail/${vm.order_no}`).then(resu => {
+                                                    if (resu.body.code == 200) {
+                                                        vm.$router.replace('/payfail/' + vm.info.storeId)
+                                                    }
+                                                })
                                             }
                                         }
                                     );
