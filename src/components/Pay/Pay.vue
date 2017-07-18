@@ -43,6 +43,9 @@
             </a>
         </div>
 
+        <!--<div style="font-size: 14px; width: 100%; height: 600px; color: #000000;">{{wxdata}}</div>-->
+
+        <input type="text" v-model="wxdata">
         <div class="pay-form-submit">
             <span>￥{{ total }}</span>
             <mt-button type="primary" size="small" class="btn-pay" @click="payIt" :disabled="payFlag">支付</mt-button>
@@ -112,7 +115,8 @@
                 info: {},
                 other: {},
                 payFlag: false,
-                order_no: ''
+                order_no: '',
+                wxdata: '123'
             }
         },
         components: {
@@ -153,6 +157,8 @@
                                 let wx_data = result.credential.wx;
                                 let vm = this;
                                 vm.payFlag = false;
+
+                                vm.wxdata = JSON.stringify(wx_data);
 
                                 function onBridgeReady() {
                                     // alert('准备支付');
