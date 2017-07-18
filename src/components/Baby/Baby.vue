@@ -1,7 +1,7 @@
 <template>
     <div class="list-con">
         <router-link :to="`/babydetail/${list.id}`" v-for="list in lists" :key="list.id" class="list-item">
-            <img :src="list.photos">
+            <div class="img-con"><img :src="list.photos"></div>
             <div class="list-item-content">
                 <span class="sale-name">{{ list.name }}</span>
                 <p class="comment" v-html="list.profile"></p>
@@ -91,10 +91,14 @@
             justify-content center
             padding 15px 0
             border-bottom 1px solid #f0f0f0
-            img
-                width 75px
-                height 75px
-                border-radius 50%
+            .img-con
+                display inline-block
+                width 20vw
+                height 20vw
+                img
+                    width 100%
+                    height 100%
+                    border-radius 50%
             .list-item-content
                 display flex
                 flex-direction column

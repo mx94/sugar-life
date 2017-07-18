@@ -2,7 +2,7 @@
     <div>
         <router-link :to="`/detail/${list.id}/service`" v-for="list in lists" :key="list.id">
             <div class="list-item">
-                <img :src="list.logo">
+                <div class="img-con"><img :src="list.logo"></div>
                 <div class="list-item-content">
                     <span class="sale-name">{{ list.storeName }}</span>
                     <div class="star-con">
@@ -101,8 +101,8 @@
                             return
                         }
                         result.data.items.forEach(item => {
-                            let {id, logo, storeName, starRating, distance, profile, cityname} = item;
-                            this.lists.push({id, logo, storeName, starRating, distance, profile, cityname});
+                            let {id, logo, storeName, starRating, distance, profile, cityName} = item;
+                            this.lists.push({id, logo, storeName, starRating, distance, profile, cityName});
                         })
                     } else {
                         Toast({
@@ -129,16 +129,20 @@
         height 105px
         background-color #fff
         align-items center
-        img
+        .img-con
+            display inline-block
             width 20vw
             height 20vw
-            border-radius 50%
-            border none
-            background-color aliceblue
+            img
+                width 100%
+                height 100%
+                border-radius 50%
+                border none
+                background-color aliceblue
         .list-item-content
             padding-left: 10px;
             position: relative;
-            width 100%
+            width calc(100% - 20vw)
             height 98%
             display flex
             flex-direction column
@@ -146,7 +150,7 @@
                 flex 1
                 font-size $font-size-medium-x
                 color $color-text-theme
-                @media only screen and (max-width: 360px)
+                @media only screen and (max-width: 330px)
                     font-size 14px
             .star-con
                 flex 1

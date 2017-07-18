@@ -1,7 +1,7 @@
 <template>
     <div class="list-con">
         <router-link v-for="(list, idx) in lists" :key="idx" class="list-item" tag="div" :to="`/paydetail/${list.id}`">
-            <img :src="list.image">
+            <div class="img-con"><img :src="list.image"></div>
             <div class="list-item-content">
                 <p class="sale-name">{{ list.serviceName }}</p>
                 <p class="comment">{{ list.serviceDetail }}</p>
@@ -105,10 +105,14 @@
             justify-content center
             padding 15px 0
             border-bottom 1px solid #f0f0f0
-            img
-                width 75px
-                height 75px
-                border-radius 50%
+            .img-con
+                display inline-block
+                width 20vw
+                height 20vw
+                img
+                    width 100%
+                    height 100%
+                    border-radius 50%
             .list-item-content
                 display flex
                 flex-direction column

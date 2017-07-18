@@ -52,9 +52,6 @@
             line-height 40px
             border-bottom 1px solid #f0f0f0
         .con
-            display flex
-            align-items center
-            justify-content center
             border-bottom 1px solid #f0f0f0
             height 85px
             .item
@@ -63,7 +60,12 @@
                 flex-direction column
                 align-items center
                 justify-content center
+                float left
+                width 25%
+                height 100%
                 .img-con
+                    display flex
+                    align-items center
                     flex 2
                     .img
                         width 35px
