@@ -176,11 +176,12 @@
                                             if (wxres.err_msg == "get_brand_wcpay_request:ok") {
                                                 vm.$router.replace('/paysuccess/' + vm.info.storeId + '/' + vm.order_no)
                                             } else {
-                                                vm.$http.put(`${baseURL}/wechat/order/payFail/${vm.order_no}`).then(resu => {
-                                                    if (resu.body.code == 200) {
-                                                        vm.$router.replace('/payfail/' + vm.info.storeId)
-                                                    }
-                                                })
+//                                                vm.$http.put(`${baseURL}/wechat/order/payFail/${vm.order_no}`).then(resu => {
+//                                                    if (resu.body.code == 200) {
+//                                                        vm.$router.replace('/payfail/' + vm.info.storeId)
+//                                                    }
+//                                                })
+                                                alert('支付失败')
                                             }
                                         }
                                     );
