@@ -161,7 +161,7 @@
                                             "appId": wx_data.appId,
                                             "timeStamp": wx_data.timeStamp,
                                             "nonceStr": wx_data.nonceStr,
-                                            "package": wx_data.package,
+                                            "package": wx_data.packageX,
                                             "signType": wx_data.signType,
                                             "paySign": wx_data.paySign
                                         },
