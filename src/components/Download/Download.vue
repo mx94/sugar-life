@@ -8,7 +8,7 @@
         <div class="image"></div>
         <div class="btn-con">
             <mt-button type="primary" class="download" @click="downApp">下载客户端</mt-button>
-            <mt-button type="primary" :plain="true" class="back-web" @click="$router.go(-1)">使用网页版继续访问</mt-button>
+            <mt-button type="primary" :plain="true" class="back-web" @click="$router.push('/')">使用网页版继续访问</mt-button>
         </div>
     </div>
 </template>
