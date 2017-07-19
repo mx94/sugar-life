@@ -2,7 +2,7 @@
     <div class="download-tooltip">
         <div class="text">
             <span>更多精彩内容</span>
-            <span>尽在贝贝宝手机客户端</span>
+            <span>尽在甜生活手机客户端</span>
         </div>
         <div class="btn-con">
             <mt-button type="default" size="small" :plain="true" class="btn" @click="$router.push('/download')">去下载</mt-button>
