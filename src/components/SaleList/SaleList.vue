@@ -9,9 +9,9 @@
                         <div class="star">
                             <star :count="list.starRating"></star>
                         </div>
-                        <div class="distance" v-show="hasPos && !otherCityFlag">距离:<span>{{ list.distance }}m</span>
+                        <div class="distance" v-show="hasPos && !isOtherCity">距离:<span>{{ list.distance }}m</span>
                         </div>
-                        <div class="distance cityname" v-show="otherCityFlag">{{list.cityName}}</div>
+                        <div class="distance cityname" v-show="isOtherCity">{{list.cityName}}</div>
                     </div>
                 </div>
             </div>
