@@ -11,7 +11,7 @@
                         </div>
                         <div class="distance" v-show="hasPos && !isOtherCity">距离:<span>{{ list.distance }}m</span>
                         </div>
-                        <div class="distance cityname" v-show="isOtherCity">{{list.cityName}}</div>
+                        <div class="distance cityname" v-show="isOtherCity && type == 'serviceType'">{{list.cityName}}</div>
                     </div>
                 </div>
             </div>
@@ -59,8 +59,10 @@
                     // 获取附近商户列表
                     if (this.type === 'distance') {
                         if (this.isOtherCity) {
-                            this.updateList(`${baseURL}/wechat/store/nearBy?gpsLat=${gpsLat}&gpsLong=${gpsLong}&page=${page}&cityName=${this.otherCityName}`)
+                            // 选择的城市不是当前定位的城市
+                            this.updateList(`${baseURL}/wechat/store?page=${page}&cityName=${this.otherCityName}`)
                         } else {
+                            // 选择的城市就是当前城市
                             this.updateList(`${baseURL}/wechat/store/nearBy?gpsLat=${gpsLat}&gpsLong=${gpsLong}&page=${page}&cityName=${this.ctName}`)
                         }
                     }
