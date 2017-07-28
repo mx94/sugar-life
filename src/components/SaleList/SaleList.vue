@@ -26,7 +26,7 @@
 
     export default {
         computed: {
-            ...mapGetters(['ctName', 'otherCityName'])
+            ...mapGetters(['ctName', 'otherCityName', 'isOtherCity'])
         },
         watch: {
             page(newPage, oldPage) {
@@ -39,7 +39,7 @@
         created() {
             this._getData(this.page)
         },
-        props: ['hasPos', 'type', 'allStoreType', 'gps', 'serviceTypeId', 'page', 'otherCityFlag'],
+        props: ['hasPos', 'type', 'allStoreType', 'gps', 'serviceTypeId', 'page'],
         data () {
             return {
                 lists: [],
@@ -58,19 +58,23 @@
 
                     // 获取附近商户列表
                     if (this.type === 'distance') {
-                        this.updateList(`${baseURL}/wechat/store/nearBy?gpsLat=${gpsLat}&gpsLong=${gpsLong}&page=${page}`)
+                        if (this.isOtherCity) {
+                            this.updateList(`${baseURL}/wechat/store/nearBy?gpsLat=${gpsLat}&gpsLong=${gpsLong}&page=${page}&cityName=${this.otherCityName}`)
+                        } else {
+                            this.updateList(`${baseURL}/wechat/store/nearBy?gpsLat=${gpsLat}&gpsLong=${gpsLong}&page=${page}&cityName=${this.ctName}`)
+                        }
                     }
 
                     // 获取指定服务类型并且是附近的商户列表
                     if (this.type === 'serviceType') {
                         if (this.serviceTypeId === '4396') {
-                            if (this.otherCityFlag) {
+                            if (this.isOtherCity) {
                                 this.updateList(`${baseURL}/app/store/findAllStore?cityName=${this.otherCityName}&limit=10&page=${page}&gpsLat=${gpsLat}&gpsLong=${gpsLong}`);
                             } else {
                                 this.updateList(`${baseURL}/app/store/findAllStore?cityName=${this.ctName}&limit=10&page=${page}&gpsLat=${gpsLat}&gpsLong=${gpsLong}`);
                             }
                         } else {
-                            if (this.otherCityFlag) {
+                            if (this.isOtherCity) {
                                 this.updateList(`${baseURL}/app/store/findStoreByServiceType?gpsLat=${gpsLat}&gpsLong=${gpsLong}&page=${page}&serviceTypeId=${this.serviceTypeId}&cityName=${this.otherCityName}`)
                             } else {
                                 this.updateList(`${baseURL}/app/store/findStoreByServiceType?gpsLat=${gpsLat}&gpsLong=${gpsLong}&page=${page}&serviceTypeId=${this.serviceTypeId}&cityName=${this.ctName}`)

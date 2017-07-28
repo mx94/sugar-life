@@ -28,7 +28,7 @@
 
     export default {
         computed: {
-            ...mapGetters(['ctName'])
+            ...mapGetters(['ctName', 'isOtherCity'])
         },
         created() {
             this.$http.get(`${baseURL}/wechat/store/findAllCityName`).then(res => {
@@ -37,7 +37,7 @@
                 }
             }).catch()
         },
-        data () {
+        data() {
             return {
                 lists: []
             }
@@ -58,10 +58,14 @@
                 } else {
                     this[types.IS_OTHER_CITY](false);
                 }
-                this.$router.go(-1)
+                this.$router.push('/')
             },
             jumpCt() {
-                this.$router.go(-1)
+                if (this.isOtherCity) {
+                    this[types.IS_OTHER_CITY](false);
+                    this[types.CHANGE_CITY](this.ctName);
+                }
+                this.$router.push('/')
             }
         }
     }
