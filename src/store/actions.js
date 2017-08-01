@@ -19,5 +19,10 @@ export const actions = {
     // 与当前定位城市是否相同
     [types.IS_OTHER_CITY]({commit}, flag) {
         commit(types.IS_OTHER_CITY, flag)
+    },
+
+    // 一进来全局设置定位的当前城市
+    [types.HELLO_WORLD]({commit}, firstCity) {
+        commit(types.HELLO_WORLD, firstCity)
     }
 }

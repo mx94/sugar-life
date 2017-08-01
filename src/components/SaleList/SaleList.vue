@@ -26,7 +26,7 @@
 
     export default {
         computed: {
-            ...mapGetters(['ctName', 'otherCityName', 'isOtherCity'])
+            ...mapGetters(['ctName', 'otherCityName', 'isOtherCity', 'psitions'])
         },
         watch: {
             page(newPage, oldPage) {
@@ -34,6 +34,9 @@
             },
             hasPos(val) {
                 this.flag = val
+            },
+            ctName(newVal, oldVal) {
+                this._getData(this.page)
             }
         },
         created() {
@@ -114,7 +117,7 @@
                         Toast({
                             message: result.message,
                             position: 'bottom',
-                            duration: 2000,
+                            duration: 800,
                             className: 'toast-class'
                         })
                         this.$emit('noData')

@@ -2,7 +2,7 @@
     <mt-header class="home-header">
         <div class="city" slot="left" @click="selectCity">
             <span v-show="isOtherCity">{{otherCityName}}</span>
-            <span v-show="!isOtherCity">{{ctName}}</span>&nbsp;
+            <span v-show="!isOtherCity">{{firstCity}}</span>&nbsp;
             <i class="mintui mintui-back icon-down"></i>
         </div>
         <div class="login" slot="right">
@@ -29,15 +29,22 @@
             ...mapGetters(['ctName', 'isOtherCity', 'otherCityName'])
         },
         created() {
-//            this.$timer = setTimeout(this.getPsition, 50)
             this.getPsition()
         },
         beforeDestroy() {
             this.$timer = null
+            this.searchTimer = null
         },
-        data () {
+        watch: {
+            ctName(newVal, oldVal) {
+                this.firstCity = newVal
+            }
+        },
+        data() {
             return {
                 $timer: null,
+                $searchTimer: null,
+                firstCity: this.ctName ? this.ctName : ''
             }
         },
         components: {MtHeader},
@@ -45,16 +52,28 @@
             ...mapActions([
                 types.SET_POSITION,
                 types.HAS_POSITION,
-                types.CHANGE_CITY
+                types.HELLO_WORLD
             ]),
+            searchTimer() {
+                this.$searchTimer = setTimeout(() => {
+                    clearTimeout(this.$searchTimer)
+                    if (getCookie('lat') && getCookie('lon')) {
+                        this[types.HAS_POSITION](true)
+                        this[types.SET_POSITION]({
+                            latitude: getCookie('lat'),
+                            longitude: getCookie('lon')
+                        })
+                        this[types.HELLO_WORLD](localStorage.getItem('city'));
+                        return;
+                    }
+                    this.searchTimer()
+                }, 500)
+            },
             getPsition() {
-                if (getCookie('lat') && getCookie('lon')) {
-                    this[types.HAS_POSITION](true);
-                    this[types.SET_POSITION]({
-                        latitude: getCookie('lat'),
-                        longitude: getCookie('lon')
-                    });
-//                    this[types.CHANGE_CITY](localStorage.getItem('city'));
+                if (!getCookie('lat') || !getCookie('lon')) {
+                    this.searchTimer();
+                } else {
+                    this.firstCity = localStorage.getItem('city')
                 }
             },
             selectCity() {

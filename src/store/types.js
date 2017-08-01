@@ -9,3 +9,6 @@ export const CHANGE_CITY = 'changeCity'
 
 // 选择别的城市改变标识
 export const IS_OTHER_CITY = 'isOtherCT'
+
+// 一进来定位的城市
+export const HELLO_WORLD = 'helloWorld'

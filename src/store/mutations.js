@@ -15,5 +15,9 @@ export const mutations = {
 
     [types.IS_OTHER_CITY](state, flag) {
         state.isOtherCity = flag
+    },
+
+    [types.HELLO_WORLD](state, firstCity) {
+        state.cityName = firstCity
     }
 }
